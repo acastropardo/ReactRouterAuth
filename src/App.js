@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import { LoginPage } from "./pages/Login";
 import { HomePage } from "./pages/Home";
-import { ProfilePage } from "./pages/Profile";
-import { SettingsPage } from "./pages/Settings";
+import { clientesPage } from "./pages/Clientes";
+import { ordenesVentaPage } from "./pages/OrdenesVenta";
 import { ProtectedLayout } from "./components/ProtectedLayout";
 import { HomeLayout } from "./components/HomeLayout";
 import "./styles.css";
@@ -16,8 +16,8 @@ export default function App() {
       </Route>
 
       <Route path="/dashboard" element={<ProtectedLayout />}>
-        <Route path="profile" element={<ProfilePage />} />
-        <Route path="settings" element={<SettingsPage />} />
+        <Route path="clientes" element={<clientesPage />} />
+        <Route path="ordenes-venta" element={<ordenesVentaPage />} />
       </Route>
     </Routes>
   );
