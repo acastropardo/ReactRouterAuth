@@ -93,7 +93,7 @@ export const AppBar = ({ pages }) => {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
           >
-            React Router Auth
+            SAT
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages?.map((page) => (
