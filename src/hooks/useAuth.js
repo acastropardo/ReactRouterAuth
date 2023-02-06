@@ -22,7 +22,10 @@ export const AuthProvider = ({ children }) => {
         email,
         password,
       })
-      .then((response) => {console.log("respuesta" +JSON.stringify(response)); setUser(response); navigate("/dashboard/clientes", { replace: true });})
+      .then((response) => {
+        //console.log("respuesta" +JSON.stringify(response)); 
+        setUser(response); 
+        navigate("/dashboard/clientes", { replace: true });})
       .catch((err) => {setError(err); console.log("error autenticacion "+err)});
       
   }
