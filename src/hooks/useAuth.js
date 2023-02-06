@@ -16,22 +16,19 @@ export const AuthProvider = ({ children }) => {
     let email = data.email;
     let password = data.password;
 
-    client
+    await client
       .authenticate({
         strategy: "local",
         email,
         password,
       })
-      .catch((err) => setError(err));
-    
-      setUser(data);
-      navigate("/dashboard/clientes", { replace: true });
-    
+      .then((response) => {console.log("respuesta" +JSON.stringify(response)); setUser(response); navigate("/dashboard/clientes", { replace: true });})
+      .catch((err) => {setError(err); console.log("error autenticacion "+err)});
+      
   }
 
   // const login = async (data) => {
-  //   setUser(data);
-  //   navigate("/dashboard/clientes", { replace: true });
+
   // };
 
   const logout = () => {
