@@ -8,6 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import client from "../feathers";
 import { useState, useEffect } from "react";
+import SearchBar from "@mkyy/mui-search-bar";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -28,6 +29,12 @@ export const OrdenesVentaPage = () => {
   //rows = leerOrdenes();
   //console.log("rows "+JSON.stringify(rows))
 
+  function handleSearch() {
+    //...
+    console.log(textFieldValue);
+  };
+
+
   function leerOrdenes() {
     //var ordenesLista = [];
 
@@ -46,15 +53,27 @@ export const OrdenesVentaPage = () => {
     //return ordenesLista;
   }
   const [post, getPost] = useState([]);
+  const [textFieldValue, setTextFieldValue] = useState("Barra de búsqueda");
 
   useEffect(() => {
     leerOrdenes();
   }, []);
 
+
   return (
     <TableContainer component={Paper}>
       <h1>Ordenes de Venta</h1>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table" layout="fixed">
+      <SearchBar
+        value={textFieldValue}
+        onChange={(newValue) => setTextFieldValue(newValue)}
+        onSearch={handleSearch}
+      />
+      <Table
+        sx={{ minWidth: 650 }}
+        size="small"
+        aria-label="a dense table"
+        layout="fixed"
+      >
         <TableHead>
           <TableRow>
             <TableCell>id</TableCell>
@@ -74,7 +93,9 @@ export const OrdenesVentaPage = () => {
                 {row.id}
               </TableCell>
               <TableCell align="right">{row.detalle_visita}</TableCell>
-              <TableCell align="right">{row["cliente.nombres"]} {row["cliente.apellidos"]}</TableCell>
+              <TableCell align="right">
+                {row["cliente.nombres"]} {row["cliente.apellidos"]}
+              </TableCell>
               <TableCell align="right">{row.fecha_visita}</TableCell>
               <TableCell align="right">{row.fecha_documento}</TableCell>
             </TableRow>
