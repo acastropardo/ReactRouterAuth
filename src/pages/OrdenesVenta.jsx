@@ -32,8 +32,32 @@ export const OrdenesVentaPage = () => {
   function handleSearch() {
     //...
     console.log(textFieldValue);
-  };
+    filtrarOrdenes(textFieldValue);
+  }
 
+  function filtrarOrdenes(filtro) {
+    //var ordenesLista = [];
+
+    client
+      .service("orden-venta")
+      .find({
+        query: {
+          id: {
+            $in: [filtro],
+          },
+        },
+      })
+      .then((response) => {
+        getPost(response.data);
+        //var ordenesLista = response.data;
+        console.log("ordenes de venta " + JSON.stringify(response.data));
+      })
+      .catch((e) => {
+        console.log(JSON.stringify(e));
+      });
+
+    //return ordenesLista;
+  }
 
   function leerOrdenes() {
     //var ordenesLista = [];
@@ -58,7 +82,6 @@ export const OrdenesVentaPage = () => {
   useEffect(() => {
     leerOrdenes();
   }, []);
-
 
   return (
     <TableContainer component={Paper}>
