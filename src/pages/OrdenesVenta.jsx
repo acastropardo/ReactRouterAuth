@@ -53,6 +53,7 @@ export const OrdenesVentaPage = () => {
 
   return (
     <TableContainer component={Paper}>
+      <h1>Ordenes de Venta</h1>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table" layout="fixed">
         <TableHead>
           <TableRow>
