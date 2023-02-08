@@ -93,7 +93,7 @@ export const OrdenesVentaGestionPage = () => {
   const [age, setAge] = useState("");
 
   useEffect(() => {
-    leerOrdenes();
+    leerTipoServicio();
   }, []);
 
   return (
@@ -108,9 +108,8 @@ export const OrdenesVentaGestionPage = () => {
           label="Age"
           onChange={handleAgeChange}
         >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          {tipoSrv.map((row) => ( <MenuItem value={row.id}>{row.descripcion}</MenuItem> ))}
+
         </Select>
         <TextField
           id="outlined-basic"
