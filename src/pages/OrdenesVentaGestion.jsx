@@ -11,11 +11,14 @@ import { useState, useEffect } from "react";
 import SearchBar from "@mkyy/mui-search-bar";
 import TextField from "@mui/material/TextField";
 import Label from "@mui/icons-material/Label";
-import Stack from '@mui/material/Stack';
-
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import Stack from "@mui/material/Stack";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -37,6 +40,12 @@ export const OrdenesVentaGestionPage = () => {
     //...
     console.log(value);
     setFechaDocumento(value);
+  }
+
+  function handleAgeChange(event) {
+    //...
+    console.log(event.target.value);
+    setAge(event.target.value);
   }
 
   function filtrarOrdenes(filtro) {
@@ -63,26 +72,25 @@ export const OrdenesVentaGestionPage = () => {
     //return ordenesLista;
   }
 
-  function leerOrdenes() {
-    //var ordenesLista = [];
-
+  function leerTipoServicio() {
     client
-      .service("orden-venta")
+      .service("tipo-servicio")
       .find()
       .then((response) => {
-        getPost(response.data);
+        getTipoSrv(response.data);
         //var ordenesLista = response.data;
-        console.log("ordenes de venta " + JSON.stringify(response.data));
+        console.log("combo tipo servicio " + JSON.stringify(response.data));
       })
       .catch((e) => {
         console.log(JSON.stringify(e));
       });
-
-    //return ordenesLista;
   }
-  const [post, getPost] = useState([]);
+
+  const [tipoSrv, getTipoSrv] = useState([]);
+
   const [textFieldValue, setTextFieldValue] = useState("Barra de búsqueda");
   const [fechaDocumento, setFechaDocumento] = useState("2021-10-10");
+  const [age, setAge] = useState("");
 
   useEffect(() => {
     leerOrdenes();
@@ -91,23 +99,40 @@ export const OrdenesVentaGestionPage = () => {
   return (
     <Paper>
       <h1>Gestión Ordenes de Venta</h1>
-     <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Stack spacing={3}>
-          <MobileDatePicker
-            label="Date mobile"
-            inputFormat="YYYY-MM-DD"
-            value={fechaDocumento}
-            onChange={handleChange}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </Stack>
-      </LocalizationProvider>
-
-      <TextField id="outlined-basic" label="Detalle Servicio" variant="outlined" size="medium" />
-      {/* <TextField id="filled-basic" label="Filled" variant="filled" />
+      <FormControl fullWidth>
+        <InputLabel id="demo-simple-select-label">Age</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={age}
+          label="Age"
+          onChange={handleAgeChange}
+        >
+          <MenuItem value={10}>Ten</MenuItem>
+          <MenuItem value={20}>Twenty</MenuItem>
+          <MenuItem value={30}>Thirty</MenuItem>
+        </Select>
+        <TextField
+          id="outlined-basic"
+          label="Detalle Servicio"
+          variant="outlined"
+          size="medium"
+        />
+        {/* <TextField id="filled-basic" label="Filled" variant="filled" />
       <TextField id="standard-basic" label="Standard" variant="standard" /> */}
+
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <Stack spacing={3}>
+            <MobileDatePicker
+              label="Fecha documento"
+              inputFormat="YYYY-MM-DD"
+              value={fechaDocumento}
+              onChange={handleChange}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </Stack>
+        </LocalizationProvider>
+      </FormControl>
     </Paper>
-      
-   
   );
 };
