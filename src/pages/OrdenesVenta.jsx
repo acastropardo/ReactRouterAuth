@@ -9,6 +9,8 @@ import Paper from "@mui/material/Paper";
 import client from "../feathers";
 import { useState, useEffect } from "react";
 import SearchBar from "@mkyy/mui-search-bar";
+import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -59,6 +61,7 @@ export const OrdenesVentaPage = () => {
     //return ordenesLista;
   }
 
+  
   function leerOrdenes() {
     //var ordenesLista = [];
 
@@ -78,6 +81,14 @@ export const OrdenesVentaPage = () => {
   }
   const [post, getPost] = useState([]);
   const [textFieldValue, setTextFieldValue] = useState("Barra de búsqueda");
+  
+  const navigate = useNavigate();
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    let path = '/dashboard/ordenes-venta-gestion'; 
+    navigate(path);
+  };
+
 
   useEffect(() => {
     leerOrdenes();
@@ -125,6 +136,9 @@ export const OrdenesVentaPage = () => {
           ))}
         </TableBody>
       </Table>
+      <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} onClick={handleSubmit}>
+        Agregar Orden de Venta
+      </Button>
     </TableContainer>
   );
 };

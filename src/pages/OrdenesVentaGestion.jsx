@@ -42,7 +42,7 @@ export const OrdenesVentaGestionPage = () => {
     setFechaDocumento(value);
   }
 
-  function handleAgeChange(event) {
+  function handleTipoServicioChange(event) {
     //...
     console.log(event.target.value);
     setAge(event.target.value);
@@ -87,8 +87,7 @@ export const OrdenesVentaGestionPage = () => {
   }
 
   const [tipoSrv, getTipoSrv] = useState([]);
-
-  const [textFieldValue, setTextFieldValue] = useState("Barra de búsqueda");
+  const [tipoServicio, getTipoServicio] = useState('');
   const [fechaDocumento, setFechaDocumento] = useState("2021-10-10");
   const [age, setAge] = useState("");
 
@@ -102,11 +101,11 @@ export const OrdenesVentaGestionPage = () => {
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Age</InputLabel>
         <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={age}
-          label="Age"
-          onChange={handleAgeChange}
+          labelId="lblTipoServicio"
+          id="tipo_servicio"
+          value={tipoServicio}
+          label="Tipo Servicio"
+          onChange={handleTipoServicioChange}
         >
           {tipoSrv.map((row) => ( <MenuItem value={row.id}>{row.descripcion}</MenuItem> ))}
 
