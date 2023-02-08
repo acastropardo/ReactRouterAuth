@@ -1,18 +1,14 @@
 import * as React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
+
 import Paper from "@mui/material/Paper";
 import client from "../feathers";
 import { useState, useEffect } from "react";
-import SearchBar from "@mkyy/mui-search-bar";
+
 import TextField from "@mui/material/TextField";
-import Label from "@mui/icons-material/Label";
+
 import Stack from "@mui/material/Stack";
 import FormControl from "@mui/material/FormControl";
+import FormGroup from "@mui/material/FormGroup";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -45,7 +41,12 @@ export const OrdenesVentaGestionPage = () => {
   function handleTipoServicioChange(event) {
     //...
     console.log(event.target.value);
-    setAge(event.target.value);
+    getTipoServicio(event.target.value);
+  }
+
+  function handlePersonalChange(event){
+    console.log(event.target.value);
+    getTecnico(event.target.value);
   }
 
   function filtrarOrdenes(filtro) {
@@ -86,14 +87,27 @@ export const OrdenesVentaGestionPage = () => {
       });
   }
 
+  function leerPersonal() {
+    client
+      .service("personal")
+      .find()
+      .then((response) => {
+        getPersonal(response.data);
+        //var ordenesLista = response.data;
+        console.log("combo personal " + JSON.stringify(response.data));
+      });
+  }
+
   var todayDate = new Date().toISOString().slice(0, 10);
   const [tipoSrv, getTipoSrv] = useState([]);
-  const [tipoServicio, getTipoServicio] = useState('');
+  const [personal, getPersonal] = useState([]);
+  const [tipoServicio, getTipoServicio, setTipoServicio] = useState("");
+  const [tecnico, getTecnico] = useState("");
   const [fechaDocumento, setFechaDocumento] = useState(todayDate);
-  const [age, setAge] = useState("");
 
   useEffect(() => {
     leerTipoServicio();
+    leerPersonal();
   }, []);
 
   return (
@@ -108,29 +122,43 @@ export const OrdenesVentaGestionPage = () => {
           label="Tipo Servicio"
           onChange={handleTipoServicioChange}
         >
-          {tipoSrv.map((row) => ( <MenuItem value={row.id}>{row.descripcion}</MenuItem> ))}
-
+          {tipoSrv.map((row) => (
+            <MenuItem value={row.id}>{row.descripcion}</MenuItem>
+          ))}
         </Select>
-        <TextField
-          id="outlined-basic"
-          label="Detalle Servicio"
+      </FormControl>
+      <TextField
+        id="outlined-basic"
+        label="Detalle Servicio"
+        variant="outlined"
+        size="medium"
+      />
+
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <Stack spacing={3}>
+          <MobileDatePicker
+            label="Fecha documento"
+            inputFormat="YYYY-MM-DD"
+            value={fechaDocumento}
+            onChange={handleChange}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </Stack>
+      </LocalizationProvider>
+      <FormControl fullWidth>
+        <InputLabel id="simpleLabelTecnico">Personal Tecnico</InputLabel>
+        <Select
+          id="selPersonalTecnico"
+          label="Personal Tecnico"
           variant="outlined"
           size="medium"
-        />
-        {/* <TextField id="filled-basic" label="Filled" variant="filled" />
-      <TextField id="standard-basic" label="Standard" variant="standard" /> */}
-
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <Stack spacing={3}>
-            <MobileDatePicker
-              label="Fecha documento"
-              inputFormat="YYYY-MM-DD"
-              value={fechaDocumento}
-              onChange={handleChange}
-              renderInput={(params) => <TextField {...params} />}
-            />
-          </Stack>
-        </LocalizationProvider>
+          value={tecnico}
+          onChange={handlePersonalChange}
+        >
+          {personal.map((row) => (
+            <MenuItem value={row.id}>{row.nombres} {row.apellidos}</MenuItem>
+          ))}
+        </Select>
       </FormControl>
     </Paper>
   );
