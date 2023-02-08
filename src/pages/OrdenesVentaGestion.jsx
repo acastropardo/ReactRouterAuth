@@ -86,9 +86,10 @@ export const OrdenesVentaGestionPage = () => {
       });
   }
 
+  var todayDate = new Date().toISOString().slice(0, 10);
   const [tipoSrv, getTipoSrv] = useState([]);
   const [tipoServicio, getTipoServicio] = useState('');
-  const [fechaDocumento, setFechaDocumento] = useState("2021-10-10");
+  const [fechaDocumento, setFechaDocumento] = useState(todayDate);
   const [age, setAge] = useState("");
 
   useEffect(() => {
@@ -99,7 +100,7 @@ export const OrdenesVentaGestionPage = () => {
     <Paper>
       <h1>Gestión Ordenes de Venta</h1>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Age</InputLabel>
+        <InputLabel id="simpleLabelTipoServicio">Tipo Servicio</InputLabel>
         <Select
           labelId="lblTipoServicio"
           id="tipo_servicio"
