@@ -3,6 +3,7 @@ import { LoginPage } from "./pages/Login";
 import { HomePage } from "./pages/Home";
 import { ClientesPage } from "./pages/Clientes";
 import { OrdenesVentaPage } from "./pages/OrdenesVenta";
+import { OrdenesVentaGestionPage } from "./pages/OrdenesVentaGestion";
 import { ProtectedLayout } from "./components/ProtectedLayout";
 import { HomeLayout } from "./components/HomeLayout";
 import "./styles.css";
@@ -18,6 +19,7 @@ export default function App() {
       <Route path="/dashboard" element={<ProtectedLayout />}>
         <Route path="clientes" element={<ClientesPage />} />
         <Route path="ordenes-venta" element={<OrdenesVentaPage />} />
+        <Route path="ordenes-venta-gestion" element={<OrdenesVentaGestionPage />} />
       </Route>
     </Routes>
   );
