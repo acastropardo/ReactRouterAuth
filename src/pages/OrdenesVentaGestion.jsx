@@ -15,6 +15,8 @@ import MenuItem from "@mui/material/MenuItem";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
+import Switch from "@mui/material/Switch";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -104,6 +106,7 @@ export const OrdenesVentaGestionPage = () => {
   const [tipoServicio, getTipoServicio, setTipoServicio] = useState("");
   const [tecnico, getTecnico] = useState("");
   const [fechaDocumento, setFechaDocumento] = useState(todayDate);
+  const [fechaVisita, setFechaVisita] = useState(todayDate);
 
   useEffect(() => {
     leerTipoServicio();
@@ -159,6 +162,20 @@ export const OrdenesVentaGestionPage = () => {
             <MenuItem value={row.id}>{row.nombres} {row.apellidos}</MenuItem>
           ))}
         </Select>
+        
+        <FormControlLabel enabled control={<Switch />} label="Agendar visita" />
+
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <Stack spacing={3}>
+          <MobileDatePicker
+            label="Fecha visita"
+            inputFormat="YYYY-MM-DD"
+            value={fechaVisita}
+            onChange={handleChange}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </Stack>
+      </LocalizationProvider>
       </FormControl>
     </Paper>
   );
