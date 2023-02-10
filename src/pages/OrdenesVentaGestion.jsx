@@ -40,7 +40,14 @@ export const OrdenesVentaGestionPage = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log("submit data " + JSON.stringify(data));
+
+    agregarOrdenVenta();
   };
+
+  function handleAgendarVisitaChange(event) {
+    console.log(event.target.checked);
+    setAgendarVisita(event.target.checked);
+  }
 
   function handleChangeFechaDocumento(value) {
     console.log(formatDate(value));
@@ -73,6 +80,25 @@ export const OrdenesVentaGestionPage = () => {
     setClienteInput(value);
     console.log("OnInputChange " + value);
 
+  }
+
+  function agregarOrdenVenta() {  
+    client
+      .service("ordenes-venta")
+      .create({
+        cliente: clienteValue,
+        tipo_servicio: tipoServicio,
+        tecnico: tecnico,
+        fecha_documento: fechaDocumento,
+        fecha_visita: fechaVisita,
+        agendar_visita: agendarVisita,
+      })
+      .then((response) => {
+        console.log("agregar orden venta " + JSON.stringify(response));
+      })
+      .catch((e) => {
+        console.log(JSON.stringify(e));
+      });
   }
 
   function leerClientes() {
@@ -121,6 +147,7 @@ export const OrdenesVentaGestionPage = () => {
   const [tecnico, getTecnico] = useState("");
   const [fechaDocumento, setFechaDocumento] = useState(todayDate);
   const [fechaVisita, setFechaVisita] = useState(todayDate);
+  const [agendarVisita, setAgendarVisita] = useState(false);
 
   useEffect(() => {
     leerTipoServicio();
@@ -205,7 +232,7 @@ export const OrdenesVentaGestionPage = () => {
             ))}
           </Select>
 
-          <FormControlLabel enabled control={<Switch />} label="Agendar visita" />
+          <FormControlLabel enabled control={<Switch />} label="Agendar visita" onChange={handleAgendarVisitaChange}/>
 
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Stack spacing={3}>
