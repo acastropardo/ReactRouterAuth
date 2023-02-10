@@ -19,9 +19,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Box from '@mui/material/Box';
 import Autocomplete from '@mui/material/Autocomplete';
 
-
-var rows = [];
-
 const countries = [
   { code: 'AD', label: 'Andorra', phone: '376' },
   {
@@ -449,15 +446,6 @@ const countries = [
 
 export const OrdenesVentaGestionPage = () => {
 
-  //rows = leerOrdenes();
-  //console.log("rows "+JSON.stringify(rows))
-
-  function handleSearch() {
-    //...
-    console.log(textFieldValue);
-    filtrarOrdenes(textFieldValue);
-  }
-
   function handleChange(value) {
     //...
     console.log(value);
@@ -475,28 +463,18 @@ export const OrdenesVentaGestionPage = () => {
     getTecnico(event.target.value);
   }
 
-  function filtrarOrdenes(filtro) {
-    //var ordenesLista = [];
-
+  function leerClientes() {
     client
-      .service("orden-venta")
-      .find({
-        query: {
-          id: {
-            $in: [filtro],
-          },
-        },
-      })
+      .service("clientes")
+      .find()
       .then((response) => {
-        getPost(response.data);
+        setCliente(response.data);
         //var ordenesLista = response.data;
-        console.log("ordenes de venta " + JSON.stringify(response.data));
+        console.log("combo clientes " + JSON.stringify(response.data));
       })
       .catch((e) => {
         console.log(JSON.stringify(e));
       });
-
-    //return ordenesLista;
   }
 
   function leerTipoServicio() {
@@ -526,6 +504,7 @@ export const OrdenesVentaGestionPage = () => {
 
   var todayDate = new Date().toISOString().slice(0, 10);
   const [tipoSrv, getTipoSrv] = useState([]);
+  const [cliente, setCliente] = useState([]);
   const [personal, getPersonal] = useState([]);
   const [tipoServicio, getTipoServicio, setTipoServicio] = useState("");
   const [tecnico, getTecnico] = useState("");
@@ -535,6 +514,7 @@ export const OrdenesVentaGestionPage = () => {
   useEffect(() => {
     leerTipoServicio();
     leerPersonal();
+    leerClientes();
   }, []);
 
   return (
@@ -543,25 +523,18 @@ export const OrdenesVentaGestionPage = () => {
       <Autocomplete
           id="country-select-demo"
           sx={{ width: 300 }}
-          options={countries}
+          options={cliente}
           autoHighlight
-          getOptionLabel={(option) => option.label}
+          getOptionLabel={(option) => option.nombres+" "+option.apellidos}
           renderOption={(props, option) => (
-            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-              <img
-                loading="lazy"
-                width="20"
-                src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                alt=""
-              />
-              {option.label} ({option.code}) +{option.phone}
+            <Box component="li"  {...props}>
+              {option.nombres} ({option.apellidos}) RUT: {option.rut}
             </Box>
           )}
           renderInput={(params) => (
             <TextField
               {...params}
-              label="Choose a country"
+              label="Seleccione cliente"
               inputProps={{
                 ...params.inputProps,
                 autoComplete: 'new-password', // disable autocomplete and autofill
