@@ -66,6 +66,11 @@ export const OrdenesVentaGestionPage = () => {
     getTipoServicio(event.target.value);
   }
 
+  function handleDescripcionChange(event) {
+    console.log(event.target.value);
+    setDescripcion(event.target.value);
+  }
+
   function handlePersonalChange(event) {
     console.log(event.target.value);
     getTecnico(event.target.value);
@@ -84,14 +89,18 @@ export const OrdenesVentaGestionPage = () => {
 
   function agregarOrdenVenta() {  
     client
-      .service("ordenes-venta")
+      .service("orden-venta")
       .create({
-        cliente: clienteValue,
+        descripcion: descripcion,
+        detalle_visita: descripcion, 
+        clienteId: clienteValue,
         tipo_servicio: tipoServicio,
         tecnico: tecnico,
         fecha_documento: fechaDocumento,
         fecha_visita: fechaVisita,
         agendar_visita: agendarVisita,
+        direccion_cliente: "direccion dummy por ahora",
+        firma: "dummie por ahora"
       })
       .then((response) => {
         console.log("agregar orden venta " + JSON.stringify(response));
@@ -148,6 +157,7 @@ export const OrdenesVentaGestionPage = () => {
   const [fechaDocumento, setFechaDocumento] = useState(todayDate);
   const [fechaVisita, setFechaVisita] = useState(todayDate);
   const [agendarVisita, setAgendarVisita] = useState(false);
+  const [descripcion, setDescripcion] = useState("");
 
   useEffect(() => {
     leerTipoServicio();
@@ -204,6 +214,7 @@ export const OrdenesVentaGestionPage = () => {
           label="Detalle Servicio"
           variant="outlined"
           size="medium"
+          onChange={handleDescripcionChange}
         />
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
