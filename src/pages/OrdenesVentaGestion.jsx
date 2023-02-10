@@ -521,7 +521,7 @@ export const OrdenesVentaGestionPage = () => {
     <Paper>
       <h1>Gestión Ordenes de Venta</h1>
       <Autocomplete
-          id="country-select-demo"
+          id="selector-cliente"
           sx={{ width: 300 }}
           options={cliente}
           autoHighlight

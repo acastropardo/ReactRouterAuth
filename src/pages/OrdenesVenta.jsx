@@ -50,7 +50,7 @@ export const OrdenesVentaPage = () => {
         },
       })
       .then((response) => {
-        getPost(response.data);
+        getOrdenesVenta(response.data);
         //var ordenesLista = response.data;
         console.log("ordenes de venta " + JSON.stringify(response.data));
       })
@@ -69,7 +69,7 @@ export const OrdenesVentaPage = () => {
       .service("orden-venta")
       .find()
       .then((response) => {
-        getPost(response.data);
+        getOrdenesVenta(response.data);
         //var ordenesLista = response.data;
         console.log("ordenes de venta " + JSON.stringify(response.data));
       })
@@ -79,7 +79,7 @@ export const OrdenesVentaPage = () => {
 
     //return ordenesLista;
   }
-  const [post, getPost] = useState([]);
+  const [ordenesVenta, getOrdenesVenta] = useState([]);
   const [textFieldValue, setTextFieldValue] = useState("Barra de búsqueda");
   
   const navigate = useNavigate();
@@ -118,7 +118,7 @@ export const OrdenesVentaPage = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {post.map((row) => (
+          {ordenesVenta.map((row) => (
             <TableRow
               key={row.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
