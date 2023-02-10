@@ -72,7 +72,7 @@ export const OrdenesVentaPage = () => {
   const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
-    let path = '/dashboard/ordenes-venta-gestion'; 
+    let path = '/dashboard/ordenes-venta-gestion/:0'; 
     navigate(path);
   };
 
