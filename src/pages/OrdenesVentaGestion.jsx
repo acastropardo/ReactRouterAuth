@@ -22,6 +22,20 @@ import { Button } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
 export const OrdenesVentaGestionPage = () => {
 
+  function formatDate(date) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+
+    return [year, month, day].join('-');
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -29,15 +43,14 @@ export const OrdenesVentaGestionPage = () => {
   };
 
   function handleChangeFechaDocumento(value) {
-    //...
-    console.log(value);
-    setFechaDocumento(value);
+    console.log(formatDate(value));
+    setFechaDocumento(formatDate(value));
+
   }
 
   function handleChangeFechaVisita(value) {
-    //...
-    console.log(value);
-    setFechaVisita(value);
+    console.log(formatDate(value));
+    setFechaVisita(formatDate(value));
   }
 
   function handleTipoServicioChange(event) {
