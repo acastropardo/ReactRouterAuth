@@ -47,6 +47,9 @@ export const OrdenesVentaGestionPage = () => {
   function handleAgendarVisitaChange(event) {
     console.log(event.target.checked);
     setAgendarVisita(event.target.checked);
+    if(event.target.checked===false){
+      setFechaVisita(null);
+    }
   }
 
   function handleChangeFechaDocumento(value) {
@@ -155,7 +158,7 @@ export const OrdenesVentaGestionPage = () => {
   const [tipoServicio, getTipoServicio, setTipoServicio] = useState("");
   const [tecnico, getTecnico] = useState("");
   const [fechaDocumento, setFechaDocumento] = useState(todayDate);
-  const [fechaVisita, setFechaVisita] = useState(todayDate);
+  const [fechaVisita, setFechaVisita] = useState(null);
   const [agendarVisita, setAgendarVisita] = useState(false);
   const [descripcion, setDescripcion] = useState("");
 
