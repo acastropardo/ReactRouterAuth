@@ -3,7 +3,7 @@ import * as React from "react";
 import Paper from "@mui/material/Paper";
 import client from "../feathers";
 import { useState, useEffect } from "react";
-
+import { Routes, Route, useParams } from 'react-router-dom';
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import FormControl from "@mui/material/FormControl";
@@ -22,6 +22,8 @@ import { Button } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
 export const OrdenesVentaGestionPage = () => {
 
+
+
   function formatDate(date) {
     var d = new Date(date),
       month = '' + (d.getMonth() + 1),
@@ -39,13 +41,13 @@ export const OrdenesVentaGestionPage = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log("submit data " + JSON.stringify(data));
+    //console.log("submit data " + JSON.stringify(data));
 
     agregarOrdenVenta();
   };
 
   function handleAgendarVisitaChange(event) {
-    console.log(event.target.checked);
+    //console.log(event.target.checked);
     setAgendarVisita(event.target.checked);
     if(event.target.checked===false){
       setFechaVisita(null);
@@ -53,40 +55,40 @@ export const OrdenesVentaGestionPage = () => {
   }
 
   function handleChangeFechaDocumento(value) {
-    console.log(formatDate(value));
+    //console.log(formatDate(value));
     setFechaDocumento(formatDate(value));
 
   }
 
   function handleChangeFechaVisita(value) {
-    console.log(formatDate(value));
+    //console.log(formatDate(value));
     setFechaVisita(formatDate(value));
   }
 
   function handleTipoServicioChange(event) {
     //...
-    console.log(event.target.value);
+    //console.log(event.target.value);
     getTipoServicio(event.target.value);
   }
 
   function handleDescripcionChange(event) {
-    console.log(event.target.value);
+    //console.log(event.target.value);
     setDescripcion(event.target.value);
   }
 
   function handlePersonalChange(event) {
-    console.log(event.target.value);
+    //console.log(event.target.value);
     getTecnico(event.target.value);
   }
 
   function handleChangeClienteValue(event, value) {
     setClienteValue(value.id);
-    console.log("value " + value.id);
+    //console.log("value " + value.id);
   }
 
   function handleChangeClienteInput(event, value) {
     setClienteInput(value);
-    console.log("OnInputChange " + value);
+    //console.log("OnInputChange " + value);
 
   }
 
@@ -119,7 +121,7 @@ export const OrdenesVentaGestionPage = () => {
       .find()
       .then((response) => {
         setClientes(response.data);
-        console.log("combo clientes " + JSON.stringify(response.data));
+        //console.log("combo clientes " + JSON.stringify(response.data));
       })
       .catch((e) => {
         console.log(JSON.stringify(e));
@@ -132,7 +134,7 @@ export const OrdenesVentaGestionPage = () => {
       .find()
       .then((response) => {
         getTipoSrv(response.data);
-        console.log("combo tipo servicio " + JSON.stringify(response.data));
+        //console.log("combo tipo servicio " + JSON.stringify(response.data));
       })
       .catch((e) => {
         console.log(JSON.stringify(e));
@@ -145,9 +147,14 @@ export const OrdenesVentaGestionPage = () => {
       .find()
       .then((response) => {
         getPersonal(response.data);
-        console.log("combo personal " + JSON.stringify(response.data));
+        //console.log("combo personal " + JSON.stringify(response.data));
       });
   }
+
+
+
+
+
 
   var todayDate = new Date().toISOString().slice(0, 10);
   const [tipoSrv, getTipoSrv] = useState([]);
@@ -161,8 +168,11 @@ export const OrdenesVentaGestionPage = () => {
   const [fechaVisita, setFechaVisita] = useState(null);
   const [agendarVisita, setAgendarVisita] = useState(false);
   const [descripcion, setDescripcion] = useState("");
+  const {params} = useParams();
+  
 
   useEffect(() => {
+    console.log("id " + params);
     leerTipoServicio();
     leerPersonal();
     leerClientes();

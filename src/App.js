@@ -19,7 +19,7 @@ export default function App() {
       <Route path="/dashboard" element={<ProtectedLayout />}>
         <Route path="clientes" element={<ClientesPage />} />
         <Route path="ordenes-venta" element={<OrdenesVentaPage />} />
-        <Route path="ordenes-venta-gestion/:id" element={<OrdenesVentaGestionPage />} />
+        <Route path="ordenes-venta-gestion/:userId" element={<OrdenesVentaGestionPage />} />
       </Route>
     </Routes>
   );
