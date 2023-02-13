@@ -168,11 +168,11 @@ export const OrdenesVentaGestionPage = () => {
   const [fechaVisita, setFechaVisita] = useState(null);
   const [agendarVisita, setAgendarVisita] = useState(false);
   const [descripcion, setDescripcion] = useState("");
-  const {params} = useParams();
-  
+  let { orderId } = useParams();
+  console.log("id " + orderId);
 
   useEffect(() => {
-    console.log("id " + params);
+    console.log("id " + orderId);
     leerTipoServicio();
     leerPersonal();
     leerClientes();
