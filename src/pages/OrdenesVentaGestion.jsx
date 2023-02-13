@@ -94,17 +94,20 @@ export const OrdenesVentaGestionPage = () => {
 
   function leerOrdenVenta(){
     let orden = '';
-    orden = orderId;
-    console.log("orden " + orden);
+    orden = orderId.replace(':', '');
+ 
     client
       .service("orden-venta")
-      .find({ query: { id: orderId } })
+      .get(orden)
       .then((response) => {
-        console.log("leer orden venta " + JSON.stringify(response));
-      })
+        //console.log("leeyendo orden venta " + JSON.stringify(response));
+        getOrdenVenta(response);
+      }) 
       .catch((e) => {
         console.log(JSON.stringify(e));
       });
+
+      //console.log("orden de venta cargada "+JSON.stringify(ordenVenta));
   }
 
   function agregarOrdenVenta() {  
@@ -167,7 +170,7 @@ export const OrdenesVentaGestionPage = () => {
   }
 
   let { orderId } = useParams();
-  console.log("id " + orderId);
+  //console.log("id " + orderId);
 
   var todayDate = new Date().toISOString().slice(0, 10);
 
@@ -182,6 +185,7 @@ export const OrdenesVentaGestionPage = () => {
   const [fechaVisita, setFechaVisita] = useState(null);
   const [agendarVisita, setAgendarVisita] = useState(false);
   const [descripcion, setDescripcion] = useState("");
+  const [ordenVenta, getOrdenVenta] = useState([]);
   
 
   useEffect(() => {
