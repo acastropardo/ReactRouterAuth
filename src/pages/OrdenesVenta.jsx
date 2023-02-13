@@ -20,7 +20,7 @@ export const OrdenesVentaPage = () => {
 
   function handleSearch() {
     //...
-    console.log(textFieldValue);
+    //console.log(textFieldValue);
     filtrarOrdenes(textFieldValue);
   }
 
@@ -39,7 +39,7 @@ export const OrdenesVentaPage = () => {
       .then((response) => {
         getOrdenesVenta(response.data);
         //var ordenesLista = response.data;
-        console.log("ordenes de venta " + JSON.stringify(response.data));
+        //console.log("ordenes de venta " + JSON.stringify(response.data));
       })
       .catch((e) => {
         console.log(JSON.stringify(e));
@@ -58,7 +58,7 @@ export const OrdenesVentaPage = () => {
       .then((response) => {
         getOrdenesVenta(response.data);
         //var ordenesLista = response.data;
-        console.log("ordenes de venta " + JSON.stringify(response.data));
+        //console.log("ordenes de venta " + JSON.stringify(response.data));
       })
       .catch((e) => {
         console.log(JSON.stringify(e));
@@ -72,7 +72,7 @@ export const OrdenesVentaPage = () => {
   const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
-    let path = '/dashboard/ordenes-venta-gestion/:0'; 
+    let path = '/dashboard/ordenes-venta-gestion/:'+"1"; 
     navigate(path);
   };
 

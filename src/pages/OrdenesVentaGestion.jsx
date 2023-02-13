@@ -92,6 +92,21 @@ export const OrdenesVentaGestionPage = () => {
 
   }
 
+  function leerOrdenVenta(){
+    let orden = '';
+    orden = orderId;
+    console.log("orden " + orden);
+    client
+      .service("orden-venta")
+      .find({ query: { id: orderId } })
+      .then((response) => {
+        console.log("leer orden venta " + JSON.stringify(response));
+      })
+      .catch((e) => {
+        console.log(JSON.stringify(e));
+      });
+  }
+
   function agregarOrdenVenta() {  
     client
       .service("orden-venta")
@@ -151,12 +166,11 @@ export const OrdenesVentaGestionPage = () => {
       });
   }
 
-
-
-
-
+  let { orderId } = useParams();
+  console.log("id " + orderId);
 
   var todayDate = new Date().toISOString().slice(0, 10);
+
   const [tipoSrv, getTipoSrv] = useState([]);
   const [clientes, setClientes] = useState([]);
   const [clienteValue, setClienteValue] = useState('');
@@ -168,11 +182,14 @@ export const OrdenesVentaGestionPage = () => {
   const [fechaVisita, setFechaVisita] = useState(null);
   const [agendarVisita, setAgendarVisita] = useState(false);
   const [descripcion, setDescripcion] = useState("");
-  let { orderId } = useParams();
-  console.log("id " + orderId);
+  
 
   useEffect(() => {
-    console.log("id " + orderId);
+    console.log("id orden venta " + orderId);
+    if(orderId!=='0'){
+      leerOrdenVenta();
+    }
+
     leerTipoServicio();
     leerPersonal();
     leerClientes();
