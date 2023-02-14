@@ -117,13 +117,15 @@ export const OrdenesVentaPage = () => {
     switch (event.target.id) {
       case "agregar":
         console.log("agregar");
-        path = "/dashboard/ordenes-venta-gestion/:" + selectedRow;
+        path = "/dashboard/ordenes-venta-gestion/:" + "0";
         navigate(path);
         break;
       case "editar":
         console.log("editar");
-        path = "/dashboard/ordenes-venta-gestion/:" + "0";
-        navigate(path);
+        if (selectedRow!=null){
+          path = "/dashboard/ordenes-venta-gestion/:" + selectedRow;
+          navigate(path);
+        }
         break;
     }
     
