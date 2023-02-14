@@ -89,8 +89,8 @@ export const OrdenesVentaGestionPage = () => {
     //console.log("OnInputChange " + value);
   }
 
-  function leerOrdenVenta(orden) {
-    client
+  async function leerOrdenVenta(orden) {
+    await client
       .service("orden-venta")
       .get(orden)
       .then((response) => {
@@ -100,12 +100,8 @@ export const OrdenesVentaGestionPage = () => {
         setDescripcion(ordenVenta.detalle_visita);
         setFechaDocumento(ordenVenta.fecha_documento);
         setFechaVisita(ordenVenta.fecha_visita);
-
-        /*leerTipoServicio();*/
         setTipoServicio(ordenVenta.tipoServicioId);
-        /*leerPersonal();*/
         setTecnico(ordenVenta.personalId);
-        /*leerClientes();*/
         setClienteInput(ordenVenta.clienteId);
         setClienteValue(ordenVenta.clienteId);
 
