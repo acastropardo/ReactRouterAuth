@@ -3,7 +3,7 @@ import * as React from "react";
 import Paper from "@mui/material/Paper";
 import client from "../feathers";
 import { useState, useEffect } from "react";
-import { Routes, Route, useParams } from 'react-router-dom';
+import { Routes, Route, useParams } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import FormControl from "@mui/material/FormControl";
@@ -16,26 +16,21 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import Box from '@mui/material/Box';
-import Autocomplete from '@mui/material/Autocomplete';
+import Box from "@mui/material/Box";
+import Autocomplete from "@mui/material/Autocomplete";
 import { Button } from "@mui/material";
-import SaveIcon from '@mui/icons-material/Save';
+import SaveIcon from "@mui/icons-material/Save";
 export const OrdenesVentaGestionPage = () => {
-
-
-
   function formatDate(date) {
     var d = new Date(date),
-      month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate(),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
       year = d.getFullYear();
 
-    if (month.length < 2)
-      month = '0' + month;
-    if (day.length < 2)
-      day = '0' + day;
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
 
-    return [year, month, day].join('-');
+    return [year, month, day].join("-");
   }
 
   const handleSubmit = (event) => {
@@ -49,7 +44,7 @@ export const OrdenesVentaGestionPage = () => {
   function handleAgendarVisitaChange(event) {
     //console.log(event.target.checked);
     setAgendarVisita(event.target.checked);
-    if(event.target.checked===false){
+    if (event.target.checked === false) {
       setFechaVisita(null);
     }
   }
@@ -57,7 +52,6 @@ export const OrdenesVentaGestionPage = () => {
   function handleChangeFechaDocumento(value) {
     //console.log(formatDate(value));
     setFechaDocumento(formatDate(value));
-
   }
 
   function handleChangeFechaVisita(value) {
@@ -68,7 +62,7 @@ export const OrdenesVentaGestionPage = () => {
   function handleTipoServicioChange(event) {
     //...
     //console.log(event.target.value);
-    getTipoServicio(event.target.value);
+    setTipoServicio(event.target.value);
   }
 
   function handleDescripcionChange(event) {
@@ -89,33 +83,30 @@ export const OrdenesVentaGestionPage = () => {
   function handleChangeClienteInput(event, value) {
     setClienteInput(value);
     //console.log("OnInputChange " + value);
-
   }
 
-  function leerOrdenVenta(orden){
+  function leerOrdenVenta(orden) {
     client
       .service("orden-venta")
       .get(orden)
       .then((response) => {
-        console.log("leyendo orden venta " + JSON.stringify(response));
+        //console.log("leyendo orden venta " + JSON.stringify(response));
         setOrdenVenta(response);
-        setDescripcion(ordenVenta.descripcion);
-        setTipoServicio(ordenVenta.tipo_servicio);
-        setOrdenVentaCargada=true;
-      }) 
+        setOrdenVentaCargada = true;
+      })
       .catch((e) => {
         console.log(JSON.stringify(e));
       });
 
-      console.log("orden de venta cargada "+JSON.stringify(ordenVenta));
+    //console.log("orden de venta cargada " + JSON.stringify(ordenVenta));
   }
 
-  function agregarOrdenVenta() {  
+  function agregarOrdenVenta() {
     client
       .service("orden-venta")
       .create({
         descripcion: descripcion,
-        detalle_visita: descripcion, 
+        detalle_visita: descripcion,
         clienteId: clienteValue,
         tipo_servicio: tipoServicio,
         tecnico: tecnico,
@@ -123,7 +114,7 @@ export const OrdenesVentaGestionPage = () => {
         fecha_visita: fechaVisita,
         agendar_visita: agendarVisita,
         direccion_cliente: "direccion dummy por ahora",
-        firma: "dummie por ahora"
+        firma: "dummie por ahora",
       })
       .then((response) => {
         console.log("agregar orden venta " + JSON.stringify(response));
@@ -176,26 +167,32 @@ export const OrdenesVentaGestionPage = () => {
 
   const [tipoSrv, getTipoSrv] = useState([]);
   const [clientes, setClientes] = useState([]);
-  const [clienteValue, setClienteValue] = useState('');
-  const [clienteInput, setClienteInput] = useState('');
+  const [clienteValue, setClienteValue] = useState("");
+  const [clienteInput, setClienteInput] = useState("");
   const [personal, getPersonal] = useState([]);
-  const [tipoServicio, getTipoServicio, setTipoServicio] = useState("");
+  const [tipoServicio,  setTipoServicio] = useState("");
   const [tecnico, getTecnico] = useState("");
   const [fechaDocumento, setFechaDocumento] = useState(todayDate);
   const [fechaVisita, setFechaVisita] = useState(null);
   const [agendarVisita, setAgendarVisita] = useState(false);
   const [descripcion, setDescripcion] = useState("");
-  const [ordenVenta, setOrdenVenta] = useState({});
+  const [ordenVenta, setOrdenVenta] = useState([]);
   const [ordenVentaCargada, setOrdenVentaCargada] = useState(false);
-  
 
   useEffect(() => {
-    let orden = '';
-    orden = orderId.replace(':', '');
-    console.log("orden seleccionada "+orden)
+    let orden = "";
+    orden = orderId.replace(":", "");
+    //console.log("orden seleccionada " + orden);
 
-    if(orden!=='0'){
+    if (orden !== "0") {
       leerOrdenVenta(orden);
+
+      console.log("orden de venta cargada *************************" + JSON.stringify(ordenVenta)+ordenVenta.descripcion);
+
+      setDescripcion(ordenVenta.detalle_visita);
+      setFechaDocumento(ordenVenta.fecha_documento);
+      setFechaVisita(ordenVenta.fecha_visita);
+      setTipoServicio(ordenVenta.tipo_servicio);
     }
 
     leerTipoServicio();
@@ -215,9 +212,11 @@ export const OrdenesVentaGestionPage = () => {
           sx={{ width: 300 }}
           options={clientes}
           autoHighlight
-          getOptionLabel={(option) => option.id + " " + option.nombres + " " + option.apellidos}
+          getOptionLabel={(option) =>
+            option.id + " " + option.nombres + " " + option.apellidos
+          }
           renderOption={(props, option) => (
-            <Box component="li"  {...props}>
+            <Box component="li" {...props}>
               {option.nombres} ({option.apellidos}) RUT: {option.rut}
             </Box>
           )}
@@ -227,7 +226,7 @@ export const OrdenesVentaGestionPage = () => {
               label="Seleccione cliente"
               inputProps={{
                 ...params.inputProps,
-                autoComplete: 'new-password', // disable autocomplete and autofill
+                autoComplete: "new-password", // disable autocomplete and autofill
               }}
             />
           )}
@@ -253,7 +252,7 @@ export const OrdenesVentaGestionPage = () => {
           variant="outlined"
           size="medium"
           onChange={handleDescripcionChange}
-          value = {descripcion}
+          value={descripcion}
         />
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -278,11 +277,18 @@ export const OrdenesVentaGestionPage = () => {
             onChange={handlePersonalChange}
           >
             {personal.map((row) => (
-              <MenuItem value={row.id}>{row.nombres} {row.apellidos}</MenuItem>
+              <MenuItem value={row.id}>
+                {row.nombres} {row.apellidos}
+              </MenuItem>
             ))}
           </Select>
 
-          <FormControlLabel enabled control={<Switch />} label="Agendar visita" onChange={handleAgendarVisitaChange}/>
+          <FormControlLabel
+            enabled
+            control={<Switch />}
+            label="Agendar visita"
+            onChange={handleAgendarVisitaChange}
+          />
 
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Stack spacing={3}>
