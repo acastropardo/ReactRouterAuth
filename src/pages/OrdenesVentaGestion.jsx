@@ -99,7 +99,8 @@ export const OrdenesVentaGestionPage = () => {
       .then((response) => {
         console.log("leyendo orden venta " + JSON.stringify(response));
         setOrdenVenta(response);
-        setDescripcion("response.descripcion");
+        setDescripcion(ordenVenta.descripcion);
+        setTipoServicio(ordenVenta.tipo_servicio);
         setOrdenVentaCargada=true;
       }) 
       .catch((e) => {
@@ -195,14 +196,6 @@ export const OrdenesVentaGestionPage = () => {
 
     if(orden!=='0'){
       leerOrdenVenta(orden);
-      
-
-     /* getTecnico(ordenVenta.tecnico);
-      getTipoServicio(ordenVenta.tipo_servicio);
-      setClienteValue(ordenVenta.clienteId);
-      setFechaDocumento(ordenVenta.fecha_documento);
-      setFechaVisita(ordenVenta.fecha_visita);
-      setAgendarVisita(ordenVenta.agendar_visita);*/
     }
 
     leerTipoServicio();
@@ -260,6 +253,7 @@ export const OrdenesVentaGestionPage = () => {
           variant="outlined"
           size="medium"
           onChange={handleDescripcionChange}
+          value = {descripcion}
         />
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
