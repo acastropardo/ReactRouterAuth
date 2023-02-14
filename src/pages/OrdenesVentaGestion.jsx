@@ -192,7 +192,7 @@ export const OrdenesVentaGestionPage = () => {
       setDescripcion(ordenVenta.detalle_visita);
       setFechaDocumento(ordenVenta.fecha_documento);
       setFechaVisita(ordenVenta.fecha_visita);
-      setTipoServicio(ordenVenta.tipo_servicio);
+      //setTipoServicio(ordenVenta.tipo_servicio);
     }
 
     leerTipoServicio();
