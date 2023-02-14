@@ -90,7 +90,7 @@ export const OrdenesVentaGestionPage = () => {
       .service("orden-venta")
       .get(orden)
       .then((response) => {
-        //console.log("leyendo orden venta " + JSON.stringify(response));
+        console.log("leyendo orden venta " + JSON.stringify(response));
         setOrdenVenta(response);
         setOrdenVentaCargada = true;
       })
@@ -198,8 +198,8 @@ export const OrdenesVentaGestionPage = () => {
       leerPersonal();
       setTecnico(ordenVenta.personalId);
       leerClientes();
-      setClienteInput(ordenVenta.clienteId);
-      setClienteValue(ordenVenta.clienteId);
+      //setClienteInput(ordenVenta.clienteId);
+      //setClienteValue(ordenVenta.clienteId);
     }
     else{
       leerTipoServicio();
@@ -214,9 +214,9 @@ export const OrdenesVentaGestionPage = () => {
       <h1>Gestión Ordenes de Venta</h1>
       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
         <Autocomplete
-          value={clienteValue}
+          //value={clienteValue} no usar se rompe
           fullWidth
-          //onChange={handleChangeClienteValue}
+          onChange={handleChangeClienteValue}
           onInputChange={handleChangeClienteInput}
           id="selector-cliente"
           sx={{ width: 300 }}
