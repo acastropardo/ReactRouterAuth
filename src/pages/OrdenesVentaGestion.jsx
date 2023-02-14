@@ -93,14 +93,13 @@ export const OrdenesVentaGestionPage = () => {
   }
 
   function leerOrdenVenta(orden){
-
- 
     client
       .service("orden-venta")
       .get(orden)
       .then((response) => {
-        console.log("leeyendo orden venta " + JSON.stringify(response));
+        //console.log("leyendo orden venta " + JSON.stringify(response));
         getOrdenVenta(response);
+        setOrdenVentaCargada=true;
       }) 
       .catch((e) => {
         console.log(JSON.stringify(e));
@@ -185,6 +184,7 @@ export const OrdenesVentaGestionPage = () => {
   const [agendarVisita, setAgendarVisita] = useState(false);
   const [descripcion, setDescripcion] = useState("");
   const [ordenVenta, getOrdenVenta] = useState([]);
+  const [ordenVentaCargada, setOrdenVentaCargada] = useState(false);
   
 
   useEffect(() => {
