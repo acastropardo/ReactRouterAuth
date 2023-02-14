@@ -198,6 +198,7 @@ export const OrdenesVentaGestionPage = () => {
       leerPersonal();
       setTecnico(ordenVenta.personalId);
       leerClientes();
+      setClienteInput(ordenVenta.clienteId);
       setClienteValue(ordenVenta.clienteId);
     }
     else{
@@ -205,10 +206,6 @@ export const OrdenesVentaGestionPage = () => {
       leerPersonal();
       leerClientes();
     }
-
-    
-    
-    
     
   }, []);
 
@@ -217,8 +214,9 @@ export const OrdenesVentaGestionPage = () => {
       <h1>Gestión Ordenes de Venta</h1>
       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
         <Autocomplete
+          value={clienteValue}
           fullWidth
-          onChange={handleChangeClienteValue}
+          //onChange={handleChangeClienteValue}
           onInputChange={handleChangeClienteInput}
           id="selector-cliente"
           sx={{ width: 300 }}
