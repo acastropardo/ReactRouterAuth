@@ -151,7 +151,7 @@ export const OrdenesVentaPage = () => {
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          checkboxSelection
+          //checkboxSelection
           onRowClick={handleTableRowSelection}
         />
       </div>
