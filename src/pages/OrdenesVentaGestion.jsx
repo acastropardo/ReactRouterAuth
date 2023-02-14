@@ -97,15 +97,16 @@ export const OrdenesVentaGestionPage = () => {
       .service("orden-venta")
       .get(orden)
       .then((response) => {
-        //console.log("leyendo orden venta " + JSON.stringify(response));
-        getOrdenVenta(response);
+        console.log("leyendo orden venta " + JSON.stringify(response));
+        setOrdenVenta(response);
+        setDescripcion("response.descripcion");
         setOrdenVentaCargada=true;
       }) 
       .catch((e) => {
         console.log(JSON.stringify(e));
       });
 
-      //console.log("orden de venta cargada "+JSON.stringify(ordenVenta));
+      console.log("orden de venta cargada "+JSON.stringify(ordenVenta));
   }
 
   function agregarOrdenVenta() {  
@@ -183,7 +184,7 @@ export const OrdenesVentaGestionPage = () => {
   const [fechaVisita, setFechaVisita] = useState(null);
   const [agendarVisita, setAgendarVisita] = useState(false);
   const [descripcion, setDescripcion] = useState("");
-  const [ordenVenta, getOrdenVenta] = useState([]);
+  const [ordenVenta, setOrdenVenta] = useState({});
   const [ordenVentaCargada, setOrdenVentaCargada] = useState(false);
   
 
@@ -194,6 +195,14 @@ export const OrdenesVentaGestionPage = () => {
 
     if(orden!=='0'){
       leerOrdenVenta(orden);
+      
+
+     /* getTecnico(ordenVenta.tecnico);
+      getTipoServicio(ordenVenta.tipo_servicio);
+      setClienteValue(ordenVenta.clienteId);
+      setFechaDocumento(ordenVenta.fecha_documento);
+      setFechaVisita(ordenVenta.fecha_visita);
+      setAgendarVisita(ordenVenta.agendar_visita);*/
     }
 
     leerTipoServicio();
