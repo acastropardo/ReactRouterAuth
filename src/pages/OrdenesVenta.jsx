@@ -110,8 +110,24 @@ export const OrdenesVentaPage = () => {
   const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
-    let path = "/dashboard/ordenes-venta-gestion/:" + "1";
-    navigate(path);
+    console.log("boton" + event.target.id);
+
+    let path = "";
+
+    switch (event.target.id) {
+      case "agregar":
+        console.log("agregar");
+        path = "/dashboard/ordenes-venta-gestion/:" + selectedRow;
+        navigate(path);
+        break;
+      case "editar":
+        console.log("editar");
+        path = "/dashboard/ordenes-venta-gestion/:" + "0";
+        navigate(path);
+        break;
+    }
+    
+    
   };
 
   useEffect(() => {
