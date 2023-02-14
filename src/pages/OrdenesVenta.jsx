@@ -49,8 +49,11 @@ export const OrdenesVentaPage = () => {
   //rows = leerOrdenes();
   //console.log("rows "+JSON.stringify(rows))
 
-  function handleTableRowSelection(event, rowData) {
-    console.log("handleTableRowSelection " + rowData);
+  function handleTableRowSelection(event) {
+    var rowData = event.row;
+
+    setSelectedRow(rowData.id);
+    console.log("selected row " + rowData.id);
   }
 
   function handleSearch() {
@@ -102,6 +105,7 @@ export const OrdenesVentaPage = () => {
   }
   const [ordenesVenta, getOrdenesVenta] = useState([]);
   const [textFieldValue, setTextFieldValue] = useState("");
+  const [selectedRow, setSelectedRow] = useState(null);
 
   const navigate = useNavigate();
   const handleSubmit = (event) => {
@@ -130,6 +134,7 @@ export const OrdenesVentaPage = () => {
           pageSize={5}
           rowsPerPageOptions={[5]}
           checkboxSelection
+          onRowClick={handleTableRowSelection}
         />
       </div>
       <Button id="agregar" type="submit" endIcon={<AddIcon />} variant="contained"  onClick={handleSubmit}>
