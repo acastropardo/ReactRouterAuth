@@ -12,6 +12,8 @@ import SearchBar from "@mkyy/mui-search-bar";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { DataGrid } from '@mui/x-data-grid';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
 
 const rows = [
   { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
@@ -130,6 +132,12 @@ export const OrdenesVentaPage = () => {
           checkboxSelection
         />
       </div>
+      <Button id="agregar" type="submit" endIcon={<AddIcon />} variant="contained"  onClick={handleSubmit}>
+        Agregar
+      </Button>&nbsp;
+      <Button id="editar" type="submit"  endIcon={<EditIcon />} variant="contained"  onClick={handleSubmit}>
+        Editar
+      </Button>
     </TableContainer>
 
     /*     <TableContainer component={Paper}>
