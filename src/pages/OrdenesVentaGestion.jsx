@@ -92,15 +92,14 @@ export const OrdenesVentaGestionPage = () => {
 
   }
 
-  function leerOrdenVenta(){
-    let orden = '';
-    orden = orderId.replace(':', '');
+  function leerOrdenVenta(orden){
+
  
     client
       .service("orden-venta")
       .get(orden)
       .then((response) => {
-        //console.log("leeyendo orden venta " + JSON.stringify(response));
+        console.log("leeyendo orden venta " + JSON.stringify(response));
         getOrdenVenta(response);
       }) 
       .catch((e) => {
@@ -189,9 +188,12 @@ export const OrdenesVentaGestionPage = () => {
   
 
   useEffect(() => {
-    console.log("id orden venta " + orderId);
-    if(orderId!=='0'){
-      leerOrdenVenta();
+    let orden = '';
+    orden = orderId.replace(':', '');
+    console.log("orden seleccionada "+orden)
+
+    if(orden!=='0'){
+      leerOrdenVenta(orden);
     }
 
     leerTipoServicio();
