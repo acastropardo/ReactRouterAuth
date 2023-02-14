@@ -11,12 +11,45 @@ import { useState, useEffect } from "react";
 import SearchBar from "@mkyy/mui-search-bar";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import { DataGrid } from '@mui/x-data-grid';
 
-var rows = [];
+const rows = [
+  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
+  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
+  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
+  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
+  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
+  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
+  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
+  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
+  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
+];
+
+const columns = [
+  { field: 'id', headerName: 'ID', width: 70 },
+  {
+    field: 'cliente',
+    headerName: 'Cliente',
+    description: 'This column has a value getter and is not sortable.',
+    sortable: false,
+    width: 160,
+    valueGetter: (params) =>
+      `${params.row["cliente.nombres"] || ''}  ${params.row["cliente.apellidos"] || ''}`,
+     // `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+  },
+  { field: 'detalle_visita', headerName: 'Detalle visita', width: 130 },
+  { field: 'fecha_documento', headerName: 'Fecha documento', width: 130 },
+  { field: 'fecha_visita', headerName: 'Fecha visita', width: 130 },
+
+];
 
 export const OrdenesVentaPage = () => {
   //rows = leerOrdenes();
   //console.log("rows "+JSON.stringify(rows))
+
+  function handleTableRowSelection(event, rowData) {
+    console.log("handleTableRowSelection " + rowData);
+  }
 
   function handleSearch() {
     //...
@@ -48,7 +81,6 @@ export const OrdenesVentaPage = () => {
     //return ordenesLista;
   }
 
-  
   function leerOrdenes() {
     //var ordenesLista = [];
 
@@ -68,14 +100,13 @@ export const OrdenesVentaPage = () => {
   }
   const [ordenesVenta, getOrdenesVenta] = useState([]);
   const [textFieldValue, setTextFieldValue] = useState("");
-  
+
   const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
-    let path = '/dashboard/ordenes-venta-gestion/:'+"1"; 
+    let path = "/dashboard/ordenes-venta-gestion/:" + "1";
     navigate(path);
   };
-
 
   useEffect(() => {
     leerOrdenes();
@@ -83,6 +114,25 @@ export const OrdenesVentaPage = () => {
 
   return (
     <TableContainer component={Paper}>
+      <h1>Ordenes de Venta</h1>
+      <SearchBar
+        value={textFieldValue}
+        onChange={(newValue) => setTextFieldValue(newValue)}
+        onSearch={handleSearch}
+      />
+
+      <div style={{ height: 400, width: "100%" }}>
+        <DataGrid
+          rows={ordenesVenta}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+          checkboxSelection
+        />
+      </div>
+    </TableContainer>
+
+    /*     <TableContainer component={Paper}>
       <h1>Ordenes de Venta</h1>
       <SearchBar
         value={textFieldValue}
@@ -126,6 +176,6 @@ export const OrdenesVentaPage = () => {
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} onClick={handleSubmit}>
         Agregar Orden de Venta
       </Button>
-    </TableContainer>
+    </TableContainer> */
   );
 };
