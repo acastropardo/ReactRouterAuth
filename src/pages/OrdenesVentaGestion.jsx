@@ -36,48 +36,48 @@ export const OrdenesVentaGestionPage = () => {
 
   const handleRefrescar = () => {
     console.log("refrescar");
-        leerOrdenVenta(orden);
+    leerOrdenVenta(orden);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-        console.log("grabar");
-        agregarOrdenVenta();
+    console.log("grabar");
+    agregarOrdenVenta();
   };
 
   function handleAgendarVisitaChange(event) {
-    //console.log(event.target.checked);
+    console.log("agendamiento "+event.target.checked);
     setAgendarVisita(event.target.checked);
     if (event.target.checked === false) {
       setFechaVisita(null);
     }
   }
 
-  function handleChangeFechaDocumento(value) {
+  /* function handleChangeFechaDocumento(value) {
     //console.log(formatDate(value));
     setFechaDocumento(formatDate(value));
-  }
+  } */
 
-  function handleChangeFechaVisita(value) {
+/*   function handleChangeFechaVisita(value) {
     //console.log(formatDate(value));
     setFechaVisita(formatDate(value));
-  }
+  } */
 
-  function handleTipoServicioChange(event) {
+ /*  function handleTipoServicioChange(event) {
     //...
     //console.log(event.target.value);
     setTipoServicio(event.target.value);
-  }
+  } */
 
-  function handleDescripcionChange(event) {
+/*   function handleDescripcionChange(event) {
     //console.log(event.target.value);
     setDescripcion(event.target.value);
-  }
+  } */
 
-  function handlePersonalChange(event) {
+/*   function handlePersonalChange(event) {
     //console.log(event.target.value);
     setTecnico(event.target.value);
-  }
+  } */
 
   function handleChangeClienteValue(event, value) {
     setClienteValue(value.id);
@@ -96,7 +96,28 @@ export const OrdenesVentaGestionPage = () => {
       .then((response) => {
         console.log("leyendo orden venta " + JSON.stringify(response));
         setOrdenVenta(response);
-        setOrdenVentaCargada = true;
+        setOrdenVentaCargada(true);
+        setDescripcion(ordenVenta.detalle_visita);
+        setFechaDocumento(ordenVenta.fecha_documento);
+        setFechaVisita(ordenVenta.fecha_visita);
+
+        /*leerTipoServicio();*/
+        setTipoServicio(ordenVenta.tipoServicioId);
+        /*leerPersonal();*/
+        setTecnico(ordenVenta.personalId);
+        /*leerClientes();*/
+        setClienteInput(ordenVenta.clienteId);
+        setClienteValue(ordenVenta.clienteId);
+
+        if(ordenVenta.agendar === "1"){
+          console.log("agendar visita" + orderVenta.agendar + " - true")
+          setAgendarVisita(true);
+        }
+        else{
+          console.log("agendar visita" + orderVenta.agendar + " - false")
+          setAgendarVisita(true);
+        }
+        ;
       })
       .catch((e) => {
         console.log(JSON.stringify(e));
@@ -174,17 +195,21 @@ export const OrdenesVentaGestionPage = () => {
   const [clienteValue, setClienteValue] = useState("");
   const [clienteInput, setClienteInput] = useState("");
   const [personal, getPersonal] = useState([]);
-  const [tipoServicio,  setTipoServicio] = useState("");
+  const [tipoServicio, setTipoServicio] = useState("");
   const [tecnico, setTecnico] = useState("");
   const [fechaDocumento, setFechaDocumento] = useState(todayDate);
   const [fechaVisita, setFechaVisita] = useState(null);
   const [agendarVisita, setAgendarVisita] = useState(false);
   const [descripcion, setDescripcion] = useState("");
-  const [ordenVenta, setOrdenVenta] = useState([]);
+  const [ordenVenta, setOrdenVenta] = useState({});
   const [ordenVentaCargada, setOrdenVentaCargada] = useState(false);
   const [orden, setOrden] = useState("");
 
   useEffect(() => {
+    leerTipoServicio();
+    leerPersonal();
+    leerClientes();
+
     let ord = "";
     ord = orderId.replace(":", "");
     setOrden(ord);
@@ -192,26 +217,13 @@ export const OrdenesVentaGestionPage = () => {
     if (orden !== "0") {
       leerOrdenVenta(orden);
 
-      console.log("orden de venta cargada *************************" + JSON.stringify(ordenVenta)+ordenVenta.descripcion);
-
-      setDescripcion(ordenVenta.detalle_visita);
-      setFechaDocumento(ordenVenta.fecha_documento);
-      setFechaVisita(ordenVenta.fecha_visita);
-      
-      leerTipoServicio();
-      setTipoServicio(ordenVenta.tipoServicioId);
-      leerPersonal();
-      setTecnico(ordenVenta.personalId);
-      leerClientes();
-      //setClienteInput(ordenVenta.clienteId);
-      //setClienteValue(ordenVenta.clienteId);
+      console.log(
+        "orden de venta cargada *************************" +
+          JSON.stringify(ordenVenta) +
+          ordenVenta.descripcion
+      );
+    } else {
     }
-    else{
-      leerTipoServicio();
-      leerPersonal();
-      leerClientes();
-    }
-    
   }, []);
 
   return (
@@ -249,11 +261,11 @@ export const OrdenesVentaGestionPage = () => {
         <FormControl fullWidth>
           <InputLabel id="simpleLabelTipoServicio">Tipo Servicio</InputLabel>
           <Select
+            value={tipoServicio} // ...force the select's value to match the state variable...
+            onChange={(e) => setTipoServicio(e.target.value)} // ... and update the state variable on any change!
             labelId="lblTipoServicio"
             id="tipo_servicio"
-            value={tipoServicio}
             label="Tipo Servicio"
-            onChange={handleTipoServicioChange}
           >
             {tipoSrv.map((row) => (
               <MenuItem value={row.id}>{row.descripcion}</MenuItem>
@@ -266,17 +278,16 @@ export const OrdenesVentaGestionPage = () => {
           label="Detalle Servicio"
           variant="outlined"
           size="medium"
-          onChange={handleDescripcionChange}
+          onChange={(e) => setDescripcion(e.target.value)}
           value={descripcion}
         />
-
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <Stack spacing={3}>
             <MobileDatePicker
               label="Fecha documento"
               inputFormat="YYYY-MM-DD"
               value={fechaDocumento}
-              onChange={handleChangeFechaDocumento}
+              onChange={(e) => setFechaDocumento(e.target.value)}
               renderInput={(params) => <TextField {...params} />}
             />
           </Stack>
@@ -288,8 +299,8 @@ export const OrdenesVentaGestionPage = () => {
             label="Personal Tecnico"
             variant="outlined"
             size="medium"
-            value={tecnico}
-            onChange={handlePersonalChange}
+            value={tecnico} // ...force the select's value to match the state variable...
+            onChange={(e) => setTecnico(e.target.value)} // ... and update the state variable on any change!
           >
             {personal.map((row) => (
               <MenuItem value={row.id}>
@@ -299,10 +310,11 @@ export const OrdenesVentaGestionPage = () => {
           </Select>
 
           <FormControlLabel
-            enabled
+            checked={agendarVisita}
             control={<Switch />}
             label="Agendar visita"
             onChange={handleAgendarVisitaChange}
+            
           />
 
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -311,17 +323,27 @@ export const OrdenesVentaGestionPage = () => {
                 label="Fecha visita"
                 inputFormat="YYYY-MM-DD"
                 value={fechaVisita}
-                onChange={handleChangeFechaVisita}
+                onChange={(e) => setFechaVisita(e.target.value)}
                 renderInput={(params) => <TextField {...params} />}
               />
             </Stack>
           </LocalizationProvider>
         </FormControl>
-        <Button id="grabar" type="submit" variant="contained" endIcon={<SaveIcon />}>
+        <Button
+          id="grabar"
+          type="submit"
+          variant="contained"
+          endIcon={<SaveIcon />}
+        >
           Grabar
         </Button>
-&nbsp;
-        <Button id="refrescar" onClick={handleRefrescar} variant="contained" endIcon={<RefreshIcon />}>
+        &nbsp;
+        <Button
+          id="refrescar"
+          onClick={handleRefrescar}
+          variant="contained"
+          endIcon={<RefreshIcon />}
+        >
           Refrescar
         </Button>
       </Box>
