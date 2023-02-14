@@ -72,7 +72,7 @@ export const OrdenesVentaGestionPage = () => {
 
   function handlePersonalChange(event) {
     //console.log(event.target.value);
-    getTecnico(event.target.value);
+    setTecnico(event.target.value);
   }
 
   function handleChangeClienteValue(event, value) {
@@ -171,7 +171,7 @@ export const OrdenesVentaGestionPage = () => {
   const [clienteInput, setClienteInput] = useState("");
   const [personal, getPersonal] = useState([]);
   const [tipoServicio,  setTipoServicio] = useState("");
-  const [tecnico, getTecnico] = useState("");
+  const [tecnico, setTecnico] = useState("");
   const [fechaDocumento, setFechaDocumento] = useState(todayDate);
   const [fechaVisita, setFechaVisita] = useState(null);
   const [agendarVisita, setAgendarVisita] = useState(false);
@@ -192,12 +192,24 @@ export const OrdenesVentaGestionPage = () => {
       setDescripcion(ordenVenta.detalle_visita);
       setFechaDocumento(ordenVenta.fecha_documento);
       setFechaVisita(ordenVenta.fecha_visita);
-      //setTipoServicio(ordenVenta.tipo_servicio);
+      
+      leerTipoServicio();
+      setTipoServicio(ordenVenta.tipoServicioId);
+      leerPersonal();
+      setTecnico(ordenVenta.personalId);
+      leerClientes();
+      setClienteValue(ordenVenta.clienteId);
+    }
+    else{
+      leerTipoServicio();
+      leerPersonal();
+      leerClientes();
     }
 
-    leerTipoServicio();
-    leerPersonal();
-    leerClientes();
+    
+    
+    
+    
   }, []);
 
   return (
