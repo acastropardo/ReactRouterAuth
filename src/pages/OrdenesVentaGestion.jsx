@@ -20,6 +20,7 @@ import Box from "@mui/material/Box";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Button } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
+import RefreshIcon from "@mui/icons-material/Refresh";
 export const OrdenesVentaGestionPage = () => {
   function formatDate(date) {
     var d = new Date(date),
@@ -33,12 +34,15 @@ export const OrdenesVentaGestionPage = () => {
     return [year, month, day].join("-");
   }
 
+  const handleRefrescar = () => {
+    console.log("refrescar");
+        leerOrdenVenta(orden);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    //console.log("submit data " + JSON.stringify(data));
-
-    agregarOrdenVenta();
+        console.log("grabar");
+        agregarOrdenVenta();
   };
 
   function handleAgendarVisitaChange(event) {
@@ -178,11 +182,12 @@ export const OrdenesVentaGestionPage = () => {
   const [descripcion, setDescripcion] = useState("");
   const [ordenVenta, setOrdenVenta] = useState([]);
   const [ordenVentaCargada, setOrdenVentaCargada] = useState(false);
+  const [orden, setOrden] = useState("");
 
   useEffect(() => {
-    let orden = "";
-    orden = orderId.replace(":", "");
-    //console.log("orden seleccionada " + orden);
+    let ord = "";
+    ord = orderId.replace(":", "");
+    setOrden(ord);
 
     if (orden !== "0") {
       leerOrdenVenta(orden);
@@ -312,8 +317,12 @@ export const OrdenesVentaGestionPage = () => {
             </Stack>
           </LocalizationProvider>
         </FormControl>
-        <Button type="submit" variant="contained" endIcon={<SaveIcon />}>
+        <Button id="grabar" type="submit" variant="contained" endIcon={<SaveIcon />}>
           Grabar
+        </Button>
+&nbsp;
+        <Button id="refrescar" onClick={handleRefrescar} variant="contained" endIcon={<RefreshIcon />}>
+          Refrescar
         </Button>
       </Box>
     </Paper>
