@@ -25,6 +25,7 @@ const columns = [
   { field: 'detalle_visita', headerName: 'Detalle visita', width: 130 },
   { field: 'fecha_documento', headerName: 'Fecha documento', width: 130 },
   { field: 'fecha_visita', headerName: 'Fecha visita', width: 130 },
+  { field: 'agendar', headerName: 'Agenda visita', width: 130 },
 
 ];
 
