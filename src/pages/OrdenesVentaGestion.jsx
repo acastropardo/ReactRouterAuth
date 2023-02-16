@@ -61,6 +61,7 @@ export const OrdenesVentaGestionPage = () => {
   } */
 
   const handleClickOpen = () => {
+    leerTipoRequerimientos();
     setOpen(true);
   };
 
@@ -186,13 +187,26 @@ export const OrdenesVentaGestionPage = () => {
       });
   }
 
+  function leerTipoRequerimientos() {
+    client
+      .service("tipo-requerimiento")
+      .find()
+      .then((response) => {
+        setTipoRequerimientos(response.data);
+        console.log("combo tipo requerimientos " + JSON.stringify(response.data));
+      })
+      .catch((e) => {
+        console.log(JSON.stringify(e));
+      });
+  }
+
   function recargarOrdenVenta(orden) {
     if (orden !== "0") {
       client
         .service("orden-venta")
         .get(orden)
         .then((response) => {
-          console.log("leyendo orden venta " + JSON.stringify(response));
+          //console.log("leyendo orden venta " + JSON.stringify(response));
           setOrdenVenta(response);
           setOrdenVentaCargada(true);
           setDescripcion(ordenVenta.detalle_visita);
@@ -258,6 +272,7 @@ export const OrdenesVentaGestionPage = () => {
   const [ordenVentaCargada, setOrdenVentaCargada] = useState(false);
   const [orden, setOrden] = useState("");
   const [open, setOpen] = useState(false);
+  const [tipoRequerimientos, setTipoRequerimientos] = useState([]);
 
   let { orderId } = useParams();
   console.log("id recibido " + orderId);
@@ -278,7 +293,7 @@ export const OrdenesVentaGestionPage = () => {
           .service("orden-venta")
           .get(orden)
           .then((response) => {
-            console.log("leyendo orden venta " + JSON.stringify(response));
+            //console.log("leyendo orden venta " + JSON.stringify(response));
             setOrdenVenta(response);
             setOrdenVentaCargada(true);
             setDescripcion(response.detalle_visita);
@@ -459,12 +474,34 @@ export const OrdenesVentaGestionPage = () => {
           Refrescar
         </Button>
         &nbsp;
-        <Button variant="contained" onClick={handleClickOpen} endIcon={<AddIcon/>}>
+        <Button
+          variant="contained"
+          onClick={handleClickOpen}
+          endIcon={<AddIcon />}
+        >
           Agregar Item
         </Button>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Detalle Orden de Venta</DialogTitle>
           <DialogContent>
+            <FormControl fullWidth>
+              <InputLabel id="simpleLabelTipoServicio">
+                Tipo Servicio
+              </InputLabel>
+              <Select
+                //value={tipoServicio} // ...force the select's value to match the state variable...
+                //onChange={(e) => setTipoServicio(e.target.value)} // ... and update the state variable on any change!
+                labelId="lblTipoRequerimiento"
+                id="tipo_requerimiento"
+                label="Tipo Requerimiento"
+              >
+                {tipoRequerimientos.map((row) => (
+                  <MenuItem key={row.id} value={row.id}>
+                    {row.descripcion}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <DialogContentText>
               To subscribe to this website, please enter your email address
               here. We will send updates occasionally.
