@@ -72,6 +72,7 @@ export const OrdenesVentaGestionPage = () => {
 
   const handleClose = () => {
     setOpen(false);
+    console.log(fechaAlta);
   };
 
   const handleRefrescar = () => {
@@ -335,6 +336,7 @@ export const OrdenesVentaGestionPage = () => {
   const [categoria, setCategoria] = useState([]);
   const [marcas, setMarcas] = useState([]);
   const [tipoMaterial, setTipoMaterial] = useState([]);
+  const [fechaAlta, setFechaAlta] = useState(todayDate);
 
   let { orderId } = useParams();
   console.log("id recibido " + orderId);
@@ -685,6 +687,17 @@ export const OrdenesVentaGestionPage = () => {
                 ))}
               </Select>
             </FormControl>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <Stack spacing={3}>
+            <MobileDatePicker
+              label="Fecha alta"
+              inputFormat="YYYY-MM-DD"
+              value={fechaAlta}
+              onChange={(e) => setFechaAlta(e.target.value)}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </Stack>
+        </LocalizationProvider>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
