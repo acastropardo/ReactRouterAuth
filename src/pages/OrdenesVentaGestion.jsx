@@ -20,6 +20,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { Button } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import AddIcon from "@mui/icons-material/Add";
 
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -457,11 +458,12 @@ export const OrdenesVentaGestionPage = () => {
         >
           Refrescar
         </Button>
-        <Button variant="outlined" onClick={handleClickOpen}>
-          Open form dialog
+        &nbsp;
+        <Button variant="contained" onClick={handleClickOpen} endIcon={<AddIcon/>}>
+          Agregar Item
         </Button>
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Subscribe</DialogTitle>
+          <DialogTitle>Detalle Orden de Venta</DialogTitle>
           <DialogContent>
             <DialogContentText>
               To subscribe to this website, please enter your email address
