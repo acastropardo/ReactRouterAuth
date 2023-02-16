@@ -62,6 +62,7 @@ export const OrdenesVentaGestionPage = () => {
 
   const handleClickOpen = () => {
     leerTipoRequerimientos();
+    leerCentrosCosto();
     setOpen(true);
   };
 
@@ -255,6 +256,16 @@ export const OrdenesVentaGestionPage = () => {
       });
   }
 
+  function leerCentrosCosto(){
+    client
+      .service("centros-costo")
+      .find()
+      .then((response) => {
+        setCentrosCosto(response.data);
+        //console.log("combo personal " + JSON.stringify(response.data));
+      });
+  }
+
   var todayDate = new Date().toISOString().slice(0, 10);
 
   const [tipoSrv, getTipoSrv] = useState([]);
@@ -273,6 +284,7 @@ export const OrdenesVentaGestionPage = () => {
   const [orden, setOrden] = useState("");
   const [open, setOpen] = useState(false);
   const [tipoRequerimientos, setTipoRequerimientos] = useState([]);
+  const [centrosCosto, setCentrosCosto] = useState([]);
 
   let { orderId } = useParams();
   console.log("id recibido " + orderId);
@@ -496,6 +508,24 @@ export const OrdenesVentaGestionPage = () => {
                 label="Tipo Requerimiento"
               >
                 {tipoRequerimientos.map((row) => (
+                  <MenuItem key={row.id} value={row.id}>
+                    {row.descripcion}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl fullWidth>
+              <InputLabel id="simpleLabelCentrosCosto">
+                Centro de Costo
+              </InputLabel>
+              <Select
+                //value={tipoServicio} // ...force the select's value to match the state variable...
+                //onChange={(e) => setTipoServicio(e.target.value)} // ... and update the state variable on any change!
+                labelId="lblCentroCosto"
+                id="centros_costo"
+                label="Centro de Costo"
+              >
+                {centrosCosto.map((row) => (
                   <MenuItem key={row.id} value={row.id}>
                     {row.descripcion}
                   </MenuItem>
