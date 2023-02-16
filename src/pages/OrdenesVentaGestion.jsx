@@ -46,7 +46,7 @@ export const OrdenesVentaGestionPage = () => {
   };
 
   function handleAgendarVisitaChange(event) {
-    console.log("agendamiento "+event.target.checked);
+    console.log("agendamiento " + event.target.checked);
     setAgendarVisita(event.target.checked);
     if (event.target.checked === false) {
       setFechaVisita(null);
@@ -58,23 +58,23 @@ export const OrdenesVentaGestionPage = () => {
     setFechaDocumento(formatDate(value));
   } */
 
-/*   function handleChangeFechaVisita(value) {
+  /*   function handleChangeFechaVisita(value) {
     //console.log(formatDate(value));
     setFechaVisita(formatDate(value));
   } */
 
- /*  function handleTipoServicioChange(event) {
+  /*  function handleTipoServicioChange(event) {
     //...
     //console.log(event.target.value);
     setTipoServicio(event.target.value);
   } */
 
-/*   function handleDescripcionChange(event) {
+  /*   function handleDescripcionChange(event) {
     //console.log(event.target.value);
     setDescripcion(event.target.value);
   } */
 
-/*   function handlePersonalChange(event) {
+  /*   function handlePersonalChange(event) {
     //console.log(event.target.value);
     setTecnico(event.target.value);
   } */
@@ -89,37 +89,37 @@ export const OrdenesVentaGestionPage = () => {
     //console.log("OnInputChange " + value);
   }
 
-  async function leerOrdenVenta(orden) {
-    await client
-      .service("orden-venta")
-      .get(orden)
-      .then((response) => {
-        console.log("leyendo orden venta " + JSON.stringify(response));
-        setOrdenVenta(response);
-        setOrdenVentaCargada(true);
-        setDescripcion(ordenVenta.detalle_visita);
-        setFechaDocumento(ordenVenta.fecha_documento);
-        setFechaVisita(ordenVenta.fecha_visita);
-        setTipoServicio(ordenVenta.tipoServicioId);
-        setTecnico(ordenVenta.personalId);
-        setClienteInput(ordenVenta.clienteId);
-        setClienteValue(ordenVenta.clienteId);
+  function leerOrdenVenta(orden) {
+    if (orden !== "0") {
+      client
+        .service("orden-venta")
+        .get(orden)
+        .then((response) => {
+          console.log("leyendo orden venta " + JSON.stringify(response));
+          setOrdenVenta(response);
+          setOrdenVentaCargada(true);
+          setDescripcion(ordenVenta.detalle_visita);
+          setFechaDocumento(ordenVenta.fecha_documento);
+          setFechaVisita(ordenVenta.fecha_visita);
+          setTipoServicio(ordenVenta.tipoServicioId);
+          setTecnico(ordenVenta.personalId);
+          setClienteInput(ordenVenta.clienteId);
+          setClienteValue(ordenVenta.clienteId);
 
-        if(ordenVenta.agendar === "1"){
-          console.log("agendar visita" + orderVenta.agendar + " - true")
-          setAgendarVisita(true);
-        }
-        else{
-          console.log("agendar visita" + orderVenta.agendar + " - false")
-          setAgendarVisita(true);
-        }
-        ;
-      })
-      .catch((e) => {
-        console.log(JSON.stringify(e));
-      });
+          if (ordenVenta.agendar === "1") {
+            console.log("agendar visita" + orderVenta.agendar + " - true");
+            setAgendarVisita(true);
+          } else {
+            console.log("agendar visita" + orderVenta.agendar + " - false");
+            setAgendarVisita(true);
+          }
+        })
+        .catch((e) => {
+          console.log(JSON.stringify(e));
+        });
 
-    //console.log("orden de venta cargada " + JSON.stringify(ordenVenta));
+      //console.log("orden de venta cargada " + JSON.stringify(ordenVenta));
+    }
   }
 
   function agregarOrdenVenta() {
@@ -181,9 +181,6 @@ export const OrdenesVentaGestionPage = () => {
       });
   }
 
-  let { orderId } = useParams();
-  //console.log("id " + orderId);
-
   var todayDate = new Date().toISOString().slice(0, 10);
 
   const [tipoSrv, getTipoSrv] = useState([]);
@@ -201,25 +198,20 @@ export const OrdenesVentaGestionPage = () => {
   const [ordenVentaCargada, setOrdenVentaCargada] = useState(false);
   const [orden, setOrden] = useState("");
 
+  let { orderId } = useParams();
+  console.log("id recibido " + orderId);
+  let ord = "";
+  ord = orderId.replace(":", "");
+  console.log("id Orden de Venta " + ord);
+  
+
   useEffect(() => {
+    setOrden(ord);
     leerTipoServicio();
     leerPersonal();
     leerClientes();
 
-    let ord = "";
-    ord = orderId.replace(":", "");
-    setOrden(ord);
-
-    if (orden !== "0") {
-      leerOrdenVenta(orden);
-
-      console.log(
-        "orden de venta cargada *************************" +
-          JSON.stringify(ordenVenta) +
-          ordenVenta.descripcion
-      );
-    } else {
-    }
+    leerOrdenVenta(ord);
   }, []);
 
   return (
@@ -310,7 +302,6 @@ export const OrdenesVentaGestionPage = () => {
             control={<Switch />}
             label="Agendar visita"
             onChange={handleAgendarVisitaChange}
-            
           />
 
           <LocalizationProvider dateAdapter={AdapterDayjs}>
