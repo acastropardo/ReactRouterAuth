@@ -481,7 +481,7 @@ export const OrdenesVentaGestionPage = () => {
         >
           Agregar Item
         </Button>
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog fullScreen='false' fullWidth='false' open={open} onClose={handleClose} scroll='body'>
           <DialogTitle>Detalle Orden de Venta</DialogTitle>
           <DialogContent>
             <FormControl fullWidth>
