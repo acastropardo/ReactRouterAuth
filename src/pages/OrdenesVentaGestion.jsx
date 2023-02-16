@@ -20,9 +20,34 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { Button } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import RefreshIcon from "@mui/icons-material/Refresh";
+
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+//import TableContainer from '@mui/material/TableContainer';
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+
 export const OrdenesVentaGestionPage = () => {
-  
-/*   function formatDate(date) {
+  function createData(name, calories, fat, carbs, protein) {
+    return { name, calories, fat, carbs, protein };
+  }
+
+  const rows = [
+    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
+    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
+    createData("Eclair", 262, 16.0, 24, 6.0),
+    createData("Cupcake", 305, 3.7, 67, 4.3),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+  ];
+
+  /*   function formatDate(date) {
     var d = new Date(date),
       month = "" + (d.getMonth() + 1),
       day = "" + d.getDate(),
@@ -34,6 +59,14 @@ export const OrdenesVentaGestionPage = () => {
     return [year, month, day].join("-");
   } */
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const handleRefrescar = () => {
     console.log("refrescar");
     recargarOrdenVenta(orden);
@@ -42,13 +75,11 @@ export const OrdenesVentaGestionPage = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log("grabar");
-    if(ordenVentaCargada===false){
+    if (ordenVentaCargada === false) {
       agregarOrdenVenta();
-    }
-    else{
+    } else {
       actualizarOrdenVenta();
     }
-    
   };
 
   function handleAgendarVisitaChange(event) {
@@ -95,28 +126,27 @@ export const OrdenesVentaGestionPage = () => {
     console.log("OnInputChange " + clienteInput);
   }
 
-
-  function actualizarOrdenVenta() { 
+  function actualizarOrdenVenta() {
     client
-    .service("orden-venta")
-    .update(orden, {  
-      descripcion: descripcion,
-      detalle_visita: descripcion,
-      clienteId: clienteValue,
-      tipo_servicio: tipoServicio,
-      tecnico: tecnico,
-      fecha_documento: fechaDocumento,
-      fecha_visita: fechaVisita,
-      agendar_visita: agendarVisita,
-      direccion_cliente: "direccion dummy por ahora",
-      firma: "dummie por ahora",
-    })
-    .then((response) => {
-      console.log("actualizar orden venta " + JSON.stringify(response));
-    })
-    .catch((e) => {
-      console.log(JSON.stringify(e));
-    });
+      .service("orden-venta")
+      .update(orden, {
+        descripcion: descripcion,
+        detalle_visita: descripcion,
+        clienteId: clienteValue,
+        tipo_servicio: tipoServicio,
+        tecnico: tecnico,
+        fecha_documento: fechaDocumento,
+        fecha_visita: fechaVisita,
+        agendar_visita: agendarVisita,
+        direccion_cliente: "direccion dummy por ahora",
+        firma: "dummie por ahora",
+      })
+      .then((response) => {
+        console.log("actualizar orden venta " + JSON.stringify(response));
+      })
+      .catch((e) => {
+        console.log(JSON.stringify(e));
+      });
   }
 
   function agregarOrdenVenta() {
@@ -226,13 +256,13 @@ export const OrdenesVentaGestionPage = () => {
   const [ordenVenta, setOrdenVenta] = useState({});
   const [ordenVentaCargada, setOrdenVentaCargada] = useState(false);
   const [orden, setOrden] = useState("");
+  const [open, setOpen] = useState(false);
 
   let { orderId } = useParams();
   console.log("id recibido " + orderId);
   let ord = "";
   ord = orderId.replace(":", "");
   console.log("id Orden de Venta " + ord);
-  
 
   useEffect(() => {
     setOrden(ord);
@@ -257,7 +287,7 @@ export const OrdenesVentaGestionPage = () => {
             setTecnico(response.personalId);
             setClienteInput(response.clienteId);
             setClienteValue(response.clienteId);
-  
+
             if (response.agendar === "1") {
               console.log("agendar visita" + response.agendar + " - true");
               setAgendarVisita(true);
@@ -269,7 +299,7 @@ export const OrdenesVentaGestionPage = () => {
           .catch((e) => {
             console.log(JSON.stringify(e));
           });
-  
+
         //console.log("orden de venta cargada " + JSON.stringify(ordenVenta));
       }
     }
@@ -280,7 +310,7 @@ export const OrdenesVentaGestionPage = () => {
       <h1>Gestión Ordenes de Venta</h1>
       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
         <Autocomplete
-          //value={clienteValue} no usar se rompe
+          //value={clienteValue} //no usar se rompe
           fullWidth
           onChange={handleChangeClienteValue}
           onInputChange={handleChangeClienteInput}
@@ -317,7 +347,9 @@ export const OrdenesVentaGestionPage = () => {
             label="Tipo Servicio"
           >
             {tipoSrv.map((row) => (
-              <MenuItem key={row.id} value={row.id}>{row.descripcion}</MenuItem>
+              <MenuItem key={row.id} value={row.id}>
+                {row.descripcion}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -377,6 +409,37 @@ export const OrdenesVentaGestionPage = () => {
             </Stack>
           </LocalizationProvider>
         </FormControl>
+      </Box>
+
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Dessert (100g serving)</TableCell>
+            <TableCell align="right">Calories</TableCell>
+            <TableCell align="right">Fat&nbsp;(g)</TableCell>
+            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
+            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row) => (
+            <TableRow
+              key={row.name}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                {row.name}
+              </TableCell>
+              <TableCell align="right">{row.calories}</TableCell>
+              <TableCell align="right">{row.fat}</TableCell>
+              <TableCell align="right">{row.carbs}</TableCell>
+              <TableCell align="right">{row.protein}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+
+      <div>
         <Button
           id="grabar"
           type="submit"
@@ -394,7 +457,32 @@ export const OrdenesVentaGestionPage = () => {
         >
           Refrescar
         </Button>
-      </Box>
+        <Button variant="outlined" onClick={handleClickOpen}>
+          Open form dialog
+        </Button>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Subscribe</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              To subscribe to this website, please enter your email address
+              here. We will send updates occasionally.
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Email Address"
+              type="email"
+              fullWidth
+              variant="standard"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleClose}>Subscribe</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     </Paper>
   );
 };
