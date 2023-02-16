@@ -64,6 +64,7 @@ export const OrdenesVentaGestionPage = () => {
     leerTipoRequerimientos();
     leerCentrosCosto();
     leerUnidadMedida();
+    leerCategoria();
     setOpen(true);
   };
 
@@ -259,6 +260,16 @@ export const OrdenesVentaGestionPage = () => {
       });
   }
 
+  function leerCategoria() {
+    client
+      .service("categoria")
+      .find()
+      .then((response) => {
+        setCategoria(response.data);
+        //console.log("combo categoria " + JSON.stringify(response.data));
+      });
+  }
+
   function leerPersonal() {
     client
       .service("personal")
@@ -299,6 +310,7 @@ export const OrdenesVentaGestionPage = () => {
   const [tipoRequerimientos, setTipoRequerimientos] = useState([]);
   const [centrosCosto, setCentrosCosto] = useState([]);
   const [unidadMedida, setUnidadMedida] = useState([]);
+  const [categoria, setCategoria] = useState([]);
 
   let { orderId } = useParams();
   console.log("id recibido " + orderId);
@@ -594,6 +606,22 @@ export const OrdenesVentaGestionPage = () => {
               label="Unidad de Medida"
             >
               {unidadMedida.map((row) => (
+                <MenuItem key={row.id} value={row.id}>
+                  {row.descripcion}
+                </MenuItem>
+              ))}
+            </Select>
+            <InputLabel id="simpleLabelCategoria">
+              Categoria
+            </InputLabel>
+            <Select
+              //value={tipoServicio} // ...force the select's value to match the state variable...
+              //onChange={(e) => setTipoServicio(e.target.value)} // ... and update the state variable on any change!
+              labelId="lblCategoria"
+              id="categoria"
+              label="Categoria"
+            >
+              {categoria.map((row) => (
                 <MenuItem key={row.id} value={row.id}>
                   {row.descripcion}
                 </MenuItem>
