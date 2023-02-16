@@ -6,6 +6,7 @@ import { OrdenesVentaPage } from "./pages/OrdenesVenta";
 import { OrdenesVentaGestionPage } from "./pages/OrdenesVentaGestion";
 import { ProtectedLayout } from "./components/ProtectedLayout";
 import { HomeLayout } from "./components/HomeLayout";
+import { React }  from "react";
 import "./styles.css";
 
 export default function App() {

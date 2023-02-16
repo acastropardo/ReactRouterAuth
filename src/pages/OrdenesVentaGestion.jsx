@@ -3,11 +3,10 @@ import * as React from "react";
 import Paper from "@mui/material/Paper";
 import client from "../feathers";
 import { useState, useEffect } from "react";
-import { Routes, Route, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import FormControl from "@mui/material/FormControl";
-import FormGroup from "@mui/material/FormGroup";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -22,7 +21,8 @@ import { Button } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import RefreshIcon from "@mui/icons-material/Refresh";
 export const OrdenesVentaGestionPage = () => {
-  function formatDate(date) {
+  
+/*   function formatDate(date) {
     var d = new Date(date),
       month = "" + (d.getMonth() + 1),
       day = "" + d.getDate(),
@@ -32,7 +32,7 @@ export const OrdenesVentaGestionPage = () => {
     if (day.length < 2) day = "0" + day;
 
     return [year, month, day].join("-");
-  }
+  } */
 
   const handleRefrescar = () => {
     console.log("refrescar");
@@ -42,7 +42,13 @@ export const OrdenesVentaGestionPage = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log("grabar");
-    agregarOrdenVenta();
+    if(ordenVentaCargada===false){
+      agregarOrdenVenta();
+    }
+    else{
+      actualizarOrdenVenta();
+    }
+    
   };
 
   function handleAgendarVisitaChange(event) {
@@ -86,7 +92,7 @@ export const OrdenesVentaGestionPage = () => {
 
   function handleChangeClienteInput(event, value) {
     setClienteInput(value);
-    //console.log("OnInputChange " + value);
+    console.log("OnInputChange " + clienteInput);
   }
 
   function leerOrdenVenta(orden) {
@@ -107,10 +113,10 @@ export const OrdenesVentaGestionPage = () => {
           setClienteValue(ordenVenta.clienteId);
 
           if (ordenVenta.agendar === "1") {
-            console.log("agendar visita" + orderVenta.agendar + " - true");
+            console.log("agendar visita" + ordenVenta.agendar + " - true");
             setAgendarVisita(true);
           } else {
-            console.log("agendar visita" + orderVenta.agendar + " - false");
+            console.log("agendar visita" + ordenVenta.agendar + " - false");
             setAgendarVisita(true);
           }
         })
@@ -120,6 +126,28 @@ export const OrdenesVentaGestionPage = () => {
 
       //console.log("orden de venta cargada " + JSON.stringify(ordenVenta));
     }
+  }
+  function actualizarOrdenVenta() { 
+    client
+    .service("orden-venta")
+    .update(orden, {  
+      descripcion: descripcion,
+      detalle_visita: descripcion,
+      clienteId: clienteValue,
+      tipo_servicio: tipoServicio,
+      tecnico: tecnico,
+      fecha_documento: fechaDocumento,
+      fecha_visita: fechaVisita,
+      agendar_visita: agendarVisita,
+      direccion_cliente: "direccion dummy por ahora",
+      firma: "dummie por ahora",
+    })
+    .then((response) => {
+      console.log("actualizar orden venta " + JSON.stringify(response));
+    })
+    .catch((e) => {
+      console.log(JSON.stringify(e));
+    });
   }
 
   function agregarOrdenVenta() {
@@ -256,7 +284,7 @@ export const OrdenesVentaGestionPage = () => {
             label="Tipo Servicio"
           >
             {tipoSrv.map((row) => (
-              <MenuItem value={row.id}>{row.descripcion}</MenuItem>
+              <MenuItem key={row.id} value={row.id}>{row.descripcion}</MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -291,7 +319,7 @@ export const OrdenesVentaGestionPage = () => {
             onChange={(e) => setTecnico(e.target.value)} // ... and update the state variable on any change!
           >
             {personal.map((row) => (
-              <MenuItem value={row.id}>
+              <MenuItem key={row.id} value={row.id}>
                 {row.nombres} {row.apellidos}
               </MenuItem>
             ))}

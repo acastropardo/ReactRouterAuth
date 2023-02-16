@@ -1,8 +1,10 @@
+/* eslint-disable react/prop-types */
 import { createContext, useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "./useLocalStorage";
 import client from "../feathers";
 import { useState } from "react";
+import { React } from "react";
 
 const AuthContext = createContext();
 
@@ -26,7 +28,7 @@ export const AuthProvider = ({ children }) => {
         //console.log("respuesta" +JSON.stringify(response)); 
         setUser(response); 
         navigate("/dashboard/clientes", { replace: true });})
-      .catch((err) => {setError(err); console.log("error autenticacion "+err)});
+      .catch((err) => {setError(err); console.log("error autenticacion "+error)});
       
   }
 

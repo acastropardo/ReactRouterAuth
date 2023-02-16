@@ -1,7 +1,9 @@
+/* eslint-disable react/prop-types */
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import React from "react";
 
 export const BasicPage = ({ title, icon }) => {
   return (

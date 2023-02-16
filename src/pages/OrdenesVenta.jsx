@@ -1,10 +1,5 @@
 import * as React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import client from "../feathers";
 import { useState, useEffect } from "react";
@@ -14,18 +9,6 @@ import { useNavigate } from "react-router-dom";
 import { DataGrid } from '@mui/x-data-grid';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
-
-const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-];
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -162,51 +145,5 @@ export const OrdenesVentaPage = () => {
         Editar
       </Button>
     </TableContainer>
-
-    /*     <TableContainer component={Paper}>
-      <h1>Ordenes de Venta</h1>
-      <SearchBar
-        value={textFieldValue}
-        onChange={(newValue) => setTextFieldValue(newValue)}
-        onSearch={handleSearch}
-      />
-      <Table
-        sx={{ minWidth: 650 }}
-        size="small"
-        aria-label="a dense table"
-        layout="fixed"
-      >
-        <TableHead>
-          <TableRow>
-            <TableCell>id</TableCell>
-            <TableCell align="right">Detalle visita</TableCell>
-            <TableCell align="right">Cliente</TableCell>
-            <TableCell align="right">Fecha visita</TableCell>
-            <TableCell align="right">Fecha documento</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {ordenesVenta.map((row) => (
-            <TableRow
-              key={row.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.id}
-              </TableCell>
-              <TableCell align="right">{row.detalle_visita}</TableCell>
-              <TableCell align="right">
-                {row["cliente.nombres"]} {row["cliente.apellidos"]}
-              </TableCell>
-              <TableCell align="right">{row.fecha_visita}</TableCell>
-              <TableCell align="right">{row.fecha_documento}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} onClick={handleSubmit}>
-        Agregar Orden de Venta
-      </Button>
-    </TableContainer> */
   );
 };
