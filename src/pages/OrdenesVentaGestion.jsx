@@ -595,38 +595,40 @@ export const OrdenesVentaGestionPage = () => {
               fullWidth
               variant="outlined"
             />
-            <InputLabel id="simpleLabelUnidadMedida">
-              Unidad de Medida
-            </InputLabel>
-            <Select
-              //value={tipoServicio} // ...force the select's value to match the state variable...
-              //onChange={(e) => setTipoServicio(e.target.value)} // ... and update the state variable on any change!
-              labelId="lblUnidadMedida"
-              id="unidad_medida"
-              label="Unidad de Medida"
-            >
-              {unidadMedida.map((row) => (
-                <MenuItem key={row.id} value={row.id}>
-                  {row.descripcion}
-                </MenuItem>
-              ))}
-            </Select>
-            <InputLabel id="simpleLabelCategoria">
-              Categoria
-            </InputLabel>
-            <Select
-              //value={tipoServicio} // ...force the select's value to match the state variable...
-              //onChange={(e) => setTipoServicio(e.target.value)} // ... and update the state variable on any change!
-              labelId="lblCategoria"
-              id="categoria"
-              label="Categoria"
-            >
-              {categoria.map((row) => (
-                <MenuItem key={row.id} value={row.id}>
-                  {row.descripcion}
-                </MenuItem>
-              ))}
-            </Select>
+            <FormControl fullWidth>
+              <InputLabel id="simpleLabelUnidadMedida">
+                Unidad de Medida
+              </InputLabel>
+              <Select
+                //value={tipoServicio} // ...force the select's value to match the state variable...
+                //onChange={(e) => setTipoServicio(e.target.value)} // ... and update the state variable on any change!
+                labelId="lblUnidadMedida"
+                id="unidad_medida"
+                label="Unidad de Medida"
+              >
+                {unidadMedida.map((row) => (
+                  <MenuItem key={row.id} value={row.id}>
+                    {row.descripcion}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl fullWidth>
+              <InputLabel id="simpleLabelCategoria">Categoria</InputLabel>
+              <Select
+                //value={tipoServicio} // ...force the select's value to match the state variable...
+                //onChange={(e) => setTipoServicio(e.target.value)} // ... and update the state variable on any change!
+                labelId="lblCategoria"
+                id="categoria"
+                label="Categoria"
+              >
+                {categoria.map((row) => (
+                  <MenuItem key={row.id} value={row.id}>
+                    {row.descripcion}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
