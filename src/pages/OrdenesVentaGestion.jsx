@@ -36,7 +36,7 @@ export const OrdenesVentaGestionPage = () => {
 
   const handleRefrescar = () => {
     console.log("refrescar");
-    leerOrdenVenta(orden);
+    recargarOrdenVenta(orden);
   };
 
   const handleSubmit = (event) => {
@@ -95,38 +95,7 @@ export const OrdenesVentaGestionPage = () => {
     console.log("OnInputChange " + clienteInput);
   }
 
-  function leerOrdenVenta(orden) {
-    if (orden !== "0") {
-      client
-        .service("orden-venta")
-        .get(orden)
-        .then((response) => {
-          console.log("leyendo orden venta " + JSON.stringify(response));
-          setOrdenVenta(response);
-          setOrdenVentaCargada(true);
-          setDescripcion(ordenVenta.detalle_visita);
-          setFechaDocumento(ordenVenta.fecha_documento);
-          setFechaVisita(ordenVenta.fecha_visita);
-          setTipoServicio(ordenVenta.tipoServicioId);
-          setTecnico(ordenVenta.personalId);
-          setClienteInput(ordenVenta.clienteId);
-          setClienteValue(ordenVenta.clienteId);
 
-          if (ordenVenta.agendar === "1") {
-            console.log("agendar visita" + ordenVenta.agendar + " - true");
-            setAgendarVisita(true);
-          } else {
-            console.log("agendar visita" + ordenVenta.agendar + " - false");
-            setAgendarVisita(true);
-          }
-        })
-        .catch((e) => {
-          console.log(JSON.stringify(e));
-        });
-
-      //console.log("orden de venta cargada " + JSON.stringify(ordenVenta));
-    }
-  }
   function actualizarOrdenVenta() { 
     client
     .service("orden-venta")
@@ -186,6 +155,38 @@ export const OrdenesVentaGestionPage = () => {
       });
   }
 
+  function recargarOrdenVenta(orden) {
+    if (orden !== "0") {
+      client
+        .service("orden-venta")
+        .get(orden)
+        .then((response) => {
+          console.log("leyendo orden venta " + JSON.stringify(response));
+          setOrdenVenta(response);
+          setOrdenVentaCargada(true);
+          setDescripcion(ordenVenta.detalle_visita);
+          setFechaDocumento(ordenVenta.fecha_documento);
+          setFechaVisita(ordenVenta.fecha_visita);
+          setTipoServicio(ordenVenta.tipoServicioId);
+          setTecnico(ordenVenta.personalId);
+          setClienteInput(ordenVenta.clienteId);
+          setClienteValue(ordenVenta.clienteId);
+
+          if (ordenVenta.agendar === "1") {
+            console.log("agendar visita" + ordenVenta.agendar + " - true");
+            setAgendarVisita(true);
+          } else {
+            console.log("agendar visita" + ordenVenta.agendar + " - false");
+            setAgendarVisita(true);
+          }
+        })
+        .catch((e) => {
+          console.log(JSON.stringify(e));
+        });
+
+      //console.log("orden de venta cargada " + JSON.stringify(ordenVenta));
+    }
+  }
   function leerTipoServicio() {
     client
       .service("tipo-servicio")
@@ -240,7 +241,39 @@ export const OrdenesVentaGestionPage = () => {
     leerClientes();
 
     leerOrdenVenta(ord);
-  }, []);
+    function leerOrdenVenta(orden) {
+      if (orden !== "0") {
+        client
+          .service("orden-venta")
+          .get(orden)
+          .then((response) => {
+            console.log("leyendo orden venta " + JSON.stringify(response));
+            setOrdenVenta(response);
+            setOrdenVentaCargada(true);
+            setDescripcion(response.detalle_visita);
+            setFechaDocumento(response.fecha_documento);
+            setFechaVisita(response.fecha_visita);
+            setTipoServicio(response.tipoServicioId);
+            setTecnico(response.personalId);
+            setClienteInput(response.clienteId);
+            setClienteValue(response.clienteId);
+  
+            if (response.agendar === "1") {
+              console.log("agendar visita" + response.agendar + " - true");
+              setAgendarVisita(true);
+            } else {
+              console.log("agendar visita" + response.agendar + " - false");
+              setAgendarVisita(true);
+            }
+          })
+          .catch((e) => {
+            console.log(JSON.stringify(e));
+          });
+  
+        //console.log("orden de venta cargada " + JSON.stringify(ordenVenta));
+      }
+    }
+  }, [ord]);
 
   return (
     <Paper>
