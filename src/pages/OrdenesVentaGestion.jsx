@@ -700,8 +700,8 @@ export const OrdenesVentaGestionPage = () => {
         </LocalizationProvider>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={handleClose}>Subscribe</Button>
+            <Button onClick={handleClose}>Cancelar</Button>
+            <Button onClick={handleClose}>Agregar Item</Button>
           </DialogActions>
         </Dialog>
       </div>
