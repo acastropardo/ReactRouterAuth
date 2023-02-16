@@ -63,6 +63,7 @@ export const OrdenesVentaGestionPage = () => {
   const handleClickOpen = () => {
     leerTipoRequerimientos();
     leerCentrosCosto();
+    leerUnidadMedida();
     setOpen(true);
   };
 
@@ -188,13 +189,25 @@ export const OrdenesVentaGestionPage = () => {
       });
   }
 
+  function leerUnidadMedida() {
+    client
+      .service("unidad-medida")
+      .find()
+      .then((response) => {
+        setUnidadMedida(response.data);
+        //console.log("combo clientes " + JSON.stringify(response.data));
+      });
+  }
+
   function leerTipoRequerimientos() {
     client
       .service("tipo-requerimiento")
       .find()
       .then((response) => {
         setTipoRequerimientos(response.data);
-        console.log("combo tipo requerimientos " + JSON.stringify(response.data));
+        console.log(
+          "combo tipo requerimientos " + JSON.stringify(response.data)
+        );
       })
       .catch((e) => {
         console.log(JSON.stringify(e));
@@ -256,7 +269,7 @@ export const OrdenesVentaGestionPage = () => {
       });
   }
 
-  function leerCentrosCosto(){
+  function leerCentrosCosto() {
     client
       .service("centros-costo")
       .find()
@@ -285,6 +298,7 @@ export const OrdenesVentaGestionPage = () => {
   const [open, setOpen] = useState(false);
   const [tipoRequerimientos, setTipoRequerimientos] = useState([]);
   const [centrosCosto, setCentrosCosto] = useState([]);
+  const [unidadMedida, setUnidadMedida] = useState([]);
 
   let { orderId } = useParams();
   console.log("id recibido " + orderId);
@@ -493,7 +507,13 @@ export const OrdenesVentaGestionPage = () => {
         >
           Agregar Item
         </Button>
-        <Dialog fullScreen='false' fullWidth='false' open={open} onClose={handleClose} scroll='body'>
+        <Dialog
+          fullScreen="false"
+          fullWidth="false"
+          open={open}
+          onClose={handleClose}
+          scroll="body"
+        >
           <DialogTitle>Detalle Orden de Venta</DialogTitle>
           <DialogContent>
             <FormControl fullWidth>
@@ -539,12 +559,46 @@ export const OrdenesVentaGestionPage = () => {
             <TextField
               autoFocus
               margin="dense"
-              id="name"
-              label="Email Address"
-              type="email"
+              id="num_serie"
+              label="Número de serie"
+              type="string"
               fullWidth
               variant="standard"
             />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="descripcion"
+              label="Descripción"
+              type="string"
+              fullWidth
+              variant="outlined"
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="cantidad"
+              label="Cantidad"
+              type="integer"
+              fullWidth
+              variant="outlined"
+            />
+            <InputLabel id="simpleLabelUnidadMedida">
+              Unidad de Medida
+            </InputLabel>
+            <Select
+              //value={tipoServicio} // ...force the select's value to match the state variable...
+              //onChange={(e) => setTipoServicio(e.target.value)} // ... and update the state variable on any change!
+              labelId="lblUnidadMedida"
+              id="unidad_medida"
+              label="Unidad de Medida"
+            >
+              {unidadMedida.map((row) => (
+                <MenuItem key={row.id} value={row.id}>
+                  {row.descripcion}
+                </MenuItem>
+              ))}
+            </Select>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
