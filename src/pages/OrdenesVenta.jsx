@@ -6,27 +6,28 @@ import { useState, useEffect } from "react";
 import SearchBar from "@mkyy/mui-search-bar";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
-import { DataGrid } from '@mui/x-data-grid';
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
+import { DataGrid } from "@mui/x-data-grid";
+import AddIcon from "@mui/icons-material/Add";
+import EditIcon from "@mui/icons-material/Edit";
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
+  { field: "id", headerName: "ID", width: 70 },
   {
-    field: 'cliente',
-    headerName: 'Cliente',
-    description: 'This column has a value getter and is not sortable.',
+    field: "cliente",
+    headerName: "Cliente",
+    description: "This column has a value getter and is not sortable.",
     sortable: false,
     width: 160,
     valueGetter: (params) =>
-      `${params.row["cliente.nombres"] || ''}  ${params.row["cliente.apellidos"] || ''}`,
-     // `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+      `${params.row["cliente.nombres"] || ""}  ${
+        params.row["cliente.apellidos"] || ""
+      }`,
+    // `${params.row.firstName || ''} ${params.row.lastName || ''}`,
   },
-  { field: 'detalle_visita', headerName: 'Detalle visita', width: 130 },
-  { field: 'fecha_documento', headerName: 'Fecha documento', width: 130 },
-  { field: 'fecha_visita', headerName: 'Fecha visita', width: 130 },
-  { field: 'agendar', headerName: 'Agenda visita', width: 130 },
-
+  { field: "detalle_visita", headerName: "Detalle visita", width: 130 },
+  { field: "fecha_documento", headerName: "Fecha documento", width: 130 },
+  { field: "fecha_visita", headerName: "Fecha visita", width: 130 },
+  { field: "agendar", headerName: "Agenda visita", width: 130 },
 ];
 
 export const OrdenesVentaPage = () => {
@@ -92,28 +93,24 @@ export const OrdenesVentaPage = () => {
   const [selectedRow, setSelectedRow] = useState(null);
 
   const navigate = useNavigate();
-  const handleSubmit = (event) => {
+  
+  const handleAgregar = (event) => {
     event.preventDefault();
-    console.log("boton" + event.target.id);
+
+    let path = "";
+    path = "/dashboard/ordenes-venta-gestion/:" + "0";
+    navigate(path);
+  };
+
+  const handleEditar = (event) => {
+    event.preventDefault();
 
     let path = "";
 
-    switch (event.target.id) {
-      case "agregar":
-        console.log("agregar");
-        path = "/dashboard/ordenes-venta-gestion/:" + "0";
-        navigate(path);
-        break;
-      case "editar":
-        console.log("editar");
-        if (selectedRow!=null){
-          path = "/dashboard/ordenes-venta-gestion/:" + selectedRow;
-          navigate(path);
-        }
-        break;
+    if (selectedRow != null) {
+      path = "/dashboard/ordenes-venta-gestion/:" + selectedRow;
+      navigate(path);
     }
-    
-    
   };
 
   useEffect(() => {
@@ -128,7 +125,6 @@ export const OrdenesVentaPage = () => {
         onChange={(newValue) => setTextFieldValue(newValue)}
         onSearch={handleSearch}
       />
-
       <div style={{ height: 400, width: "100%" }}>
         <DataGrid
           rows={ordenesVenta}
@@ -139,10 +135,23 @@ export const OrdenesVentaPage = () => {
           onRowClick={handleTableRowSelection}
         />
       </div>
-      <Button id="agregar" type="submit" endIcon={<AddIcon />} variant="contained"  onClick={handleSubmit}>
+      <Button
+        id="agregar"
+        type="submit"
+        endIcon={<AddIcon />}
+        variant="contained"
+        onClick={handleAgregar}
+      >
         Agregar
-      </Button>&nbsp;
-      <Button id="editar" type="submit"  endIcon={<EditIcon />} variant="contained"  onClick={handleSubmit}>
+      </Button>
+      &nbsp;
+      <Button
+        id="editar"
+        type="submit"
+        endIcon={<EditIcon />}
+        variant="contained"
+        onClick={handleEditar}
+      >
         Editar
       </Button>
     </TableContainer>
