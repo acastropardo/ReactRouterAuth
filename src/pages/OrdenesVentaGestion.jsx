@@ -468,8 +468,8 @@ export const OrdenesVentaGestionPage = () => {
       }
     }
 
-    setDetalleOrdenVenta(rows);
-    console.log(detalleOrdenVenta);
+    //setDetalleOrdenVenta(rows);
+    //console.log(detalleOrdenVenta);
   }, [ord]);
 
   return (
