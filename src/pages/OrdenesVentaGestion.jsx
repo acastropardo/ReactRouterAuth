@@ -37,7 +37,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
 export const OrdenesVentaGestionPage = () => {
-  const [detalleOrdenVenta, setDetalleOrdenVenta] = useState([]);
+const [detalleOrdenVenta, setDetalleOrdenesVenta] = useState([]);
+
 
   function createData(
     num_serie,
@@ -79,28 +80,9 @@ export const OrdenesVentaGestionPage = () => {
     };
   }
 
-  const rows = [
-    createData(
-      "ABC123",
-      "Prueba",
-      1,
-      "2022-01-01",
-      "2022-01-01",
-      "Prueba",
-      "Prueba",
-      "Prueba",
-      1000,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1
-    ),
-  ];
-
+  let rows = [ ];
+   
+  
   /*   function formatDate(date) {
     var d = new Date(date),
       month = "" + (d.getMonth() + 1),
@@ -130,7 +112,7 @@ export const OrdenesVentaGestionPage = () => {
   };
 
   const handleAgregarDetalleOrdenVenta = () => {
-    let rowDetalleOrdenVenta = createData(
+    rows = createData(
       numSerie,
       descripcion,
       cantidad,
@@ -149,13 +131,13 @@ export const OrdenesVentaGestionPage = () => {
       orden,
       statusOrdenVentaId
     );
-    agregarDetalleOrdenVenta(rowDetalleOrdenVenta);
+
+    agregarDetalleOrdenVenta(rows);
     setOpen(false);
   };
 
   function agregarDetalleOrdenVenta(detalleOrdenVentaRow) {
     detalleOrdenVenta.push(detalleOrdenVentaRow);
-    setDetalleOrdenVenta(detalleOrdenVenta);
   }
 
   const handleRefrescar = () => {
@@ -467,7 +449,7 @@ export const OrdenesVentaGestionPage = () => {
         //console.log("orden de venta cargada " + JSON.stringify(ordenVenta));
       }
     }
-
+    setDetalleOrdenesVenta(rows);
     //setDetalleOrdenVenta(rows);
     //console.log(detalleOrdenVenta);
   }, [ord]);
@@ -589,7 +571,7 @@ export const OrdenesVentaGestionPage = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {detalleOrdenVenta.map((row) => (
             <TableRow
               key={row.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -692,7 +674,7 @@ export const OrdenesVentaGestionPage = () => {
               onChange={(e) => setNumSerie(e.target.value)}
               value={numSerie}
             />
-            <TextField
+{/*             <TextField
               autoFocus
               margin="dense"
               id="descripcion"
@@ -709,7 +691,7 @@ export const OrdenesVentaGestionPage = () => {
               type="integer"
               fullWidth
               variant="outlined"
-            />
+            /> */}
             <FormControl fullWidth>
               <InputLabel id="simpleLabelUnidadMedida">
                 Unidad de Medida
