@@ -5,6 +5,7 @@ import client from "../feathers";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import TextField from "@mui/material/TextField";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
 import Stack from "@mui/material/Stack";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -25,7 +26,7 @@ import AddIcon from "@mui/icons-material/Add";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
+//import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 import Table from "@mui/material/Table";
@@ -36,22 +37,69 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
 export const OrdenesVentaGestionPage = () => {
-
   const [detalleOrdenVenta, setDetalleOrdenVenta] = useState([]);
 
-  function createData(num_serie, descripcion, cantidad, fecha_alta, fecha_ultima_mantencion, observacion_1, observacion_2, observacion_3,monto,unidadMedidaId, caregoriumId, marcaId, tipoMaterialId, centrosCostoId, tipoRequerimientoId, ordenVentumId, statusOrdenVentumId) {
-    return { num_serie, descripcion, cantidad, fecha_alta, fecha_ultima_mantencion, observacion_1, observacion_2, observacion_3,monto,unidadMedidaId, caregoriumId, marcaId, tipoMaterialId, centrosCostoId, tipoRequerimientoId, ordenVentumId, statusOrdenVentumId };
+  function createData(
+    num_serie,
+    descripcion,
+    cantidad,
+    fecha_alta,
+    fecha_ultima_mantencion,
+    observacion_1,
+    observacion_2,
+    observacion_3,
+    monto,
+    unidadMedidaId,
+    caregoriumId,
+    marcaId,
+    tipoMaterialId,
+    centrosCostoId,
+    tipoRequerimientoId,
+    ordenVentumId,
+    statusOrdenVentumId
+  ) {
+    return {
+      num_serie,
+      descripcion,
+      cantidad,
+      fecha_alta,
+      fecha_ultima_mantencion,
+      observacion_1,
+      observacion_2,
+      observacion_3,
+      monto,
+      unidadMedidaId,
+      caregoriumId,
+      marcaId,
+      tipoMaterialId,
+      centrosCostoId,
+      tipoRequerimientoId,
+      ordenVentumId,
+      statusOrdenVentumId,
+    };
   }
 
   const rows = [
-    createData("ABC123", "Prueba", 1, "2022-01-01", "2022-01-01", "Prueba", "Prueba", "Prueba", 1000, 1, 1, 1, 1, 1, 1, 1, 1),
-    //createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    //createData("Eclair", 262, 16.0, 24, 6.0),
-    //createData("Cupcake", 305, 3.7, 67, 4.3),
-    //createData("Gingerbread", 356, 16.0, 49, 3.9),
+    createData(
+      "ABC123",
+      "Prueba",
+      1,
+      "2022-01-01",
+      "2022-01-01",
+      "Prueba",
+      "Prueba",
+      "Prueba",
+      1000,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ),
   ];
-
-  
 
   /*   function formatDate(date) {
     var d = new Date(date),
@@ -72,6 +120,7 @@ export const OrdenesVentaGestionPage = () => {
     leerCategoria();
     leerMarcas();
     leerTipoMaterial();
+    leerStatusOrdenVenta();
     setOpen(true);
   };
 
@@ -79,6 +128,35 @@ export const OrdenesVentaGestionPage = () => {
     setOpen(false);
     console.log(fechaAlta);
   };
+
+  const handleAgregarDetalleOrdenVenta = () => {
+    let rowDetalleOrdenVenta = createData(
+      numSerie,
+      descripcion,
+      cantidad,
+      fechaAlta,
+      fechaUltimaMantencion,
+      observacion1,
+      observacion2,
+      observacion3,
+      monto,
+      unidadMedidaId,
+      categoriaId,
+      marcaId,
+      tipoMaterialId,
+      centroCostoId,
+      tipoRequerimientoId,
+      orden,
+      statusOrdenVentaId
+    );
+    agregarDetalleOrdenVenta(rowDetalleOrdenVenta);
+    setOpen(false);
+  };
+
+  function agregarDetalleOrdenVenta(detalleOrdenVentaRow) {
+    detalleOrdenVenta.push(detalleOrdenVentaRow);
+    setDetalleOrdenVenta(detalleOrdenVenta);
+  }
 
   const handleRefrescar = () => {
     console.log("refrescar");
@@ -172,7 +250,7 @@ export const OrdenesVentaGestionPage = () => {
       });
   }
 
-  function leerTipoMaterial(){
+  function leerTipoMaterial() {
     client
       .service("tipo-material")
       .find()
@@ -292,6 +370,16 @@ export const OrdenesVentaGestionPage = () => {
       });
   }
 
+  function leerStatusOrdenVenta(){
+    client
+    .service("status-orden-venta")
+    .find()
+    .then((response) => {
+      setStatusOrdenVenta(response.data);
+      //console.log("combo personal " + JSON.stringify(response.data));
+    });
+  }
+
   var todayDate = new Date().toISOString().slice(0, 10);
 
   const [tipoSrv, getTipoSrv] = useState([]);
@@ -309,14 +397,30 @@ export const OrdenesVentaGestionPage = () => {
   const [ordenVentaCargada, setOrdenVentaCargada] = useState(false);
   const [orden, setOrden] = useState("");
   const [open, setOpen] = useState(false);
+
   const [tipoRequerimientos, setTipoRequerimientos] = useState([]);
   const [centrosCosto, setCentrosCosto] = useState([]);
   const [unidadMedida, setUnidadMedida] = useState([]);
   const [categoria, setCategoria] = useState([]);
   const [marcas, setMarcas] = useState([]);
   const [tipoMaterial, setTipoMaterial] = useState([]);
+  const [statusOrdenVenta, setStatusOrdenVenta] = useState([]);
+
   const [fechaAlta, setFechaAlta] = useState(todayDate);
-  
+  const [fechaUltimaMantencion, setFechaUltimaMantencion] = useState(todayDate);
+  const [numSerie, setNumSerie] = useState("");
+  const [tipoRequerimientoId, setTipoRequerimientoId] = useState("");
+  const [unidadMedidaId, setUnidadMedidaId] = useState("");
+  const [categoriaId, setCategoriaId] = useState("");
+  const [marcaId, setMarcaId] = useState("");
+  const [tipoMaterialId, setTipoMaterialId] = useState("");
+  const [centroCostoId, setCentroCostoId] = useState("");
+  const [observacion1, setObservacion1] = useState("");
+  const [observacion2, setObservacion2] = useState("");
+  const [observacion3, setObservacion3] = useState("");
+  const [cantidad, setCantidad] = useState(0);
+  const [monto, setMonto] = useState(0);
+  const [statusOrdenVentaId, setStatusOrdenVentaId] = useState("");
 
   let { orderId } = useParams();
   console.log("id recibido " + orderId);
@@ -365,7 +469,7 @@ export const OrdenesVentaGestionPage = () => {
     }
 
     setDetalleOrdenVenta(rows);
-    console.log(detalleOrdenVenta)
+    console.log(detalleOrdenVenta);
   }, [ord]);
 
   return (
@@ -538,12 +642,12 @@ export const OrdenesVentaGestionPage = () => {
           <DialogTitle>Detalle Orden de Venta</DialogTitle>
           <DialogContent>
             <FormControl fullWidth>
-              <InputLabel id="simpleLabelTipoServicio">
-                Tipo Servicio
+              <InputLabel id="simpleLabelTipoRequerimiento">
+                Tipo Requerimiento
               </InputLabel>
               <Select
-                //value={tipoServicio} // ...force the select's value to match the state variable...
-                //onChange={(e) => setTipoServicio(e.target.value)} // ... and update the state variable on any change!
+                value={tipoRequerimientoId} // ...force the select's value to match the state variable...
+                onChange={(e) => setTipoRequerimientoId(e.target.value)} // ... and update the state variable on any change!
                 labelId="lblTipoRequerimiento"
                 id="tipo_requerimiento"
                 label="Tipo Requerimiento"
@@ -560,8 +664,8 @@ export const OrdenesVentaGestionPage = () => {
                 Centro de Costo
               </InputLabel>
               <Select
-                //value={tipoServicio} // ...force the select's value to match the state variable...
-                //onChange={(e) => setTipoServicio(e.target.value)} // ... and update the state variable on any change!
+                value={centroCostoId} // ...force the select's value to match the state variable...
+                onChange={(e) => setCentroCostoId(e.target.value)} // ... and update the state variable on any change!
                 labelId="lblCentroCosto"
                 id="centros_costo"
                 label="Centro de Costo"
@@ -573,10 +677,10 @@ export const OrdenesVentaGestionPage = () => {
                 ))}
               </Select>
             </FormControl>
-            <DialogContentText>
+            {/* <DialogContentText>
               To subscribe to this website, please enter your email address
               here. We will send updates occasionally.
-            </DialogContentText>
+            </DialogContentText> */}
             <TextField
               autoFocus
               margin="dense"
@@ -585,6 +689,8 @@ export const OrdenesVentaGestionPage = () => {
               type="string"
               fullWidth
               variant="standard"
+              onChange={(e) => setNumSerie(e.target.value)}
+              value={numSerie}
             />
             <TextField
               autoFocus
@@ -609,8 +715,8 @@ export const OrdenesVentaGestionPage = () => {
                 Unidad de Medida
               </InputLabel>
               <Select
-                //value={tipoServicio} // ...force the select's value to match the state variable...
-                //onChange={(e) => setTipoServicio(e.target.value)} // ... and update the state variable on any change!
+                value={unidadMedidaId} // ...force the select's value to match the state variable...
+                onChange={(e) => setUnidadMedidaId(e.target.value)} // ... and update the state variable on any change!
                 labelId="lblUnidadMedida"
                 id="unidad_medida"
                 label="Unidad de Medida"
@@ -625,8 +731,8 @@ export const OrdenesVentaGestionPage = () => {
             <FormControl fullWidth>
               <InputLabel id="simpleLabelCategoria">Categoria</InputLabel>
               <Select
-                //value={tipoServicio} // ...force the select's value to match the state variable...
-                //onChange={(e) => setTipoServicio(e.target.value)} // ... and update the state variable on any change!
+                value={categoriaId} // ...force the select's value to match the state variable...
+                onChange={(e) => setCategoriaId(e.target.value)} // ... and update the state variable on any change!
                 labelId="lblCategoria"
                 id="categoria"
                 label="Categoria"
@@ -641,8 +747,8 @@ export const OrdenesVentaGestionPage = () => {
             <FormControl fullWidth>
               <InputLabel id="simpleLabelMarca">Marca</InputLabel>
               <Select
-                //value={tipoServicio} // ...force the select's value to match the state variable...
-                //onChange={(e) => setTipoServicio(e.target.value)} // ... and update the state variable on any change!
+                value={marcaId} // ...force the select's value to match the state variable...
+                onChange={(e) => setMarcaId(e.target.value)} // ... and update the state variable on any change!
                 labelId="lblMarca"
                 id="marca"
                 label="Marca"
@@ -655,10 +761,12 @@ export const OrdenesVentaGestionPage = () => {
               </Select>
             </FormControl>
             <FormControl fullWidth>
-              <InputLabel id="simpleLabelTipoMaterial">Tipo Material</InputLabel>
+              <InputLabel id="simpleLabelTipoMaterial">
+                Tipo Material
+              </InputLabel>
               <Select
-                //value={tipoServicio} // ...force the select's value to match the state variable...
-                //onChange={(e) => setTipoServicio(e.target.value)} // ... and update the state variable on any change!
+                value={tipoMaterialId} // ...force the select's value to match the state variable...
+                onChange={(e) => setTipoMaterialId(e.target.value)} // ... and update the state variable on any change!
                 labelId="lblTipoMaterial"
                 id="tipo_material"
                 label="Tipo Material"
@@ -671,20 +779,94 @@ export const OrdenesVentaGestionPage = () => {
               </Select>
             </FormControl>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <Stack spacing={3}>
-            <MobileDatePicker
-              label="Fecha alta"
-              inputFormat="YYYY-MM-DD"
-              value={fechaAlta}
-              onChange={(e) => setFechaAlta(e.target.value)}
-              renderInput={(params) => <TextField {...params} />}
-            />
-          </Stack>
-        </LocalizationProvider>
+              <Stack spacing={3}>
+                <MobileDatePicker
+                  label="Fecha alta"
+                  inputFormat="YYYY-MM-DD"
+                  value={fechaAlta}
+                  onChange={(e) => setFechaAlta(e.target.value)}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </Stack>
+
+              <Stack spacing={3}>
+                <MobileDatePicker
+                  label="Fecha ultima mantencion"
+                  inputFormat="YYYY-MM-DD"
+                  value={fechaUltimaMantencion}
+                  onChange={(e) => setFechaUltimaMantencion(e.target.value)}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </Stack>
+
+              <TextField
+                fullWidth
+                id="outlined-basic"
+                label="Cantidad"
+                variant="outlined"
+                size="small"
+                onChange={(e) => setCantidad(e.target.value)}
+                value={cantidad}
+              />
+
+              <TextField
+                fullWidth
+                id="outlined-basic"
+                label="Monto"
+                variant="outlined"
+                size="small"
+                onChange={(e) => setMonto(e.target.value)}
+                value={monto}
+              />
+              <FormControl fullWidth>
+                <TextareaAutosize
+                  value={observacion1}
+                  onChange={(e) => setObservacion1(e.target.value)}
+                  aria-label="minimum height"
+                  rowsMin={3}
+                  placeholder="Observación 1"
+                />
+                <TextareaAutosize
+                  value={observacion2}
+                  onChange={(e) => setObservacion2(e.target.value)}
+                  aria-label="minimum height"
+                  rowsMin={3}
+                  placeholder="Observación 2"
+                />
+                <TextareaAutosize
+                  value={observacion3}
+                  onChange={(e) => setObservacion3(e.target.value)}
+                  aria-label="minimum height"
+                  rowsMin={3}
+                  placeholder="Observación 3"
+                />
+              </FormControl>
+            </LocalizationProvider>
+
+            <FormControl fullWidth>
+              <InputLabel id="simpleLabelStatusOrdenVenta">
+                Status Orden Venta
+              </InputLabel>
+              <Select
+                value={statusOrdenVentaId} // ...force the select's value to match the state variable...
+                onChange={(e) => setStatusOrdenVentaId(e.target.value)} // ... and update the state variable on any change!
+                labelId="lblStatusOrdenVenta"
+                id="status_orden_venta"
+                label="Status Orden Venta"
+              >
+                {statusOrdenVenta.map((row) => (
+                  <MenuItem key={row.id} value={row.id}>
+                    {row.text}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancelar</Button>
-            <Button onClick={handleClose}>Agregar Item</Button>
+            <Button onClick={handleAgregarDetalleOrdenVenta}>
+              Agregar Item
+            </Button>
           </DialogActions>
         </Dialog>
       </div>
