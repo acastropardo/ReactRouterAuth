@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import client from "../feathers";
 import { useState, useEffect } from "react";
@@ -29,18 +30,27 @@ import DialogContent from "@mui/material/DialogContent";
 //import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
+//import TableContainer from '@mui/material/TableContainer';
+/*
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-//import TableContainer from '@mui/material/TableContainer';
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-
+*/
 export const OrdenesVentaGestionPage = () => {
 const [detalleOrdenVenta, setDetalleOrdenesVenta] = useState([]);
 
+const columns = [
+  { field: "descripcion", headerName: "descripcion", width: 140 },
+  { field: "num_serie", headerName: "N° serie", width: 130 },
+  { field: "cantidad", headerName: "Cantidad", width: 130 },
+  { field: "monto", headerName: "monto", width: 130 },
+
+];
 
   function createData(
+    id,
     num_serie,
     descripcion,
     cantidad,
@@ -60,6 +70,7 @@ const [detalleOrdenVenta, setDetalleOrdenesVenta] = useState([]);
     statusOrdenVentumId
   ) {
     return {
+      id,
       num_serie,
       descripcion,
       cantidad,
@@ -113,6 +124,7 @@ const [detalleOrdenVenta, setDetalleOrdenesVenta] = useState([]);
 
   const handleAgregarDetalleOrdenVenta = () => {
     rows = createData(
+      id,
       numSerie,
       descripcion,
       cantidad,
@@ -138,6 +150,7 @@ const [detalleOrdenVenta, setDetalleOrdenesVenta] = useState([]);
 
   function agregarDetalleOrdenVenta(detalleOrdenVentaRow) {
     detalleOrdenVenta.push(detalleOrdenVentaRow);
+    setId(detalleOrdenVenta.length + 1);
   }
 
   const handleRefrescar = () => {
@@ -403,13 +416,14 @@ const [detalleOrdenVenta, setDetalleOrdenesVenta] = useState([]);
   const [cantidad, setCantidad] = useState(0);
   const [monto, setMonto] = useState(0);
   const [statusOrdenVentaId, setStatusOrdenVentaId] = useState("");
+  const [id, setId] = useState(0);
 
   let { orderId } = useParams();
   console.log("id recibido " + orderId);
   let ord = "";
   ord = orderId.replace(":", "");
   console.log("id Orden de Venta " + ord);
-
+  const editable = detalleOrdenVenta.map(o => ({ ...o }));
   useEffect(() => {
     setOrden(ord);
     leerTipoServicio();
@@ -450,6 +464,7 @@ const [detalleOrdenVenta, setDetalleOrdenesVenta] = useState([]);
       }
     }
     setDetalleOrdenesVenta(rows);
+    
     //setDetalleOrdenVenta(rows);
     //console.log(detalleOrdenVenta);
   }, [ord]);
@@ -560,7 +575,7 @@ const [detalleOrdenVenta, setDetalleOrdenesVenta] = useState([]);
         </FormControl>
       </Box>
 
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+{/*       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell align="right">Obsevacion</TableCell>
@@ -586,7 +601,22 @@ const [detalleOrdenVenta, setDetalleOrdenesVenta] = useState([]);
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+      </Table> */}
+
+
+
+      <div style={{ height: 400, width: "100%" }}>
+        <DataGrid
+          rows={editable}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+          //checkboxSelection
+          //onRowClick={handleTableRowSelection}
+        />
+      </div>
+
+
 
       <div>
         <Button
