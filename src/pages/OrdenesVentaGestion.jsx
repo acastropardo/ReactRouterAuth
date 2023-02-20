@@ -199,6 +199,18 @@ const columns = [
     setFechaDocumento(value);
   }
 
+  function handleFechaUltimaMantencionChange(value) {
+    //...
+    console.log("fecha ultima mantencion "+value);
+    setFechaUltimaMantencion(value);
+  }
+
+  function handleFechaAltaChange(value) {
+    //...
+    console.log("fecha alta "+value);
+    setFechaAlta(value);
+  }
+
   function handleFechaVisitaChange(value) {
     //...
     console.log("fecha visita "+value);
@@ -817,10 +829,11 @@ const columns = [
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <Stack spacing={3}>
                 <MobileDatePicker
+                  id="fecha_alta"
                   label="Fecha alta"
                   inputFormat="YYYY-MM-DD"
                   value={fechaAlta}
-                  onChange={(e) => setFechaAlta(e.target.value)}
+                  onChange={handleFechaAltaChange}
                   renderInput={(params) => <TextField {...params} />}
                 />
               </Stack>
@@ -830,7 +843,7 @@ const columns = [
                   label="Fecha ultima mantencion"
                   inputFormat="YYYY-MM-DD"
                   value={fechaUltimaMantencion}
-                  onChange={(e) => setFechaUltimaMantencion(e.target.value)}
+                  onChange={handleFechaUltimaMantencionChange}
                   renderInput={(params) => <TextField {...params} />}
                 />
               </Stack>
