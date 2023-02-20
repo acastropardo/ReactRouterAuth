@@ -165,6 +165,7 @@ const columns = [
   const handleRefrescar = () => {
     console.log("refrescar");
     recargarOrdenVenta(orden);
+    leerDetalleOrdenVenta(orden);
   };
 
   const handleGrabar = () => {
@@ -457,6 +458,24 @@ const columns = [
     });
   }
 
+  function leerDetalleOrdenVenta(orden) {
+    client
+      .service("detalle-orden-venta")
+      .find({
+        query: {
+          ordenVentumId: orden,
+          $sort: { id: 1 },
+        },
+      })
+      .then((response) => {
+        setDetalleOrdenesVenta(response.data);
+        console.log("detalle orden venta " + JSON.stringify(response.data));
+      })
+      .catch((e) => {
+        console.log(JSON.stringify(e));
+      });
+  }
+
   var todayDate = new Date().toISOString().slice(0, 10);
 
   const [tipoSrv, getTipoSrv] = useState([]);
@@ -516,6 +535,10 @@ const columns = [
     leerClientes();
 
     leerOrdenVenta(ord);
+    leerDetalleOrdenVenta(ord);
+    
+
+    
     function leerOrdenVenta(orden) {
       if (orden !== "0") {
         client
