@@ -106,6 +106,13 @@ const columns = [
     return [year, month, day].join("-");
   } */
 
+  function handleTableRowSelection(event) {
+    var rowData = event.row;
+
+    setSelectedRow(rowData.id);
+    console.log("selected row " + selectedRow);
+  }
+
   const handleClickOpen = () => {
     leerTipoRequerimientos();
     leerCentrosCosto();
@@ -416,7 +423,10 @@ const columns = [
   const [cantidad, setCantidad] = useState(0);
   const [monto, setMonto] = useState(0);
   const [statusOrdenVentaId, setStatusOrdenVentaId] = useState("");
+
+  //para el datagrid
   const [id, setId] = useState(0);
+  const [selectedRow, setSelectedRow] = useState(null);
 
   let { orderId } = useParams();
   console.log("id recibido " + orderId);
@@ -612,7 +622,7 @@ const columns = [
           pageSize={5}
           rowsPerPageOptions={[5]}
           //checkboxSelection
-          //onRowClick={handleTableRowSelection}
+          onRowClick={handleTableRowSelection}
         />
       </div>
 
@@ -700,7 +710,7 @@ const columns = [
               label="Número de serie"
               type="string"
               fullWidth
-              variant="standard"
+              variant="outlined"
               onChange={(e) => setNumSerie(e.target.value)}
               value={numSerie}
             />
