@@ -129,7 +129,9 @@ const columns = [
     console.log(fechaAlta);
   };
 
+
   const handleAgregarDetalleOrdenVenta = () => {
+
     rows = createData(
       id,
       numSerie,
@@ -165,11 +167,24 @@ const columns = [
     recargarOrdenVenta(orden);
   };
 
+  const handleGrabar = () => {
+
+    if (ordenVentaCargada === false) {
+      console.log("grabar nueva orden de venta");
+
+      grabarOrdenVenta();
+      grabarDetalleOrdenVenta();
+    } else {
+      actualizarOrdenVenta();
+    }
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log("grabar");
     if (ordenVentaCargada === false) {
-      agregarOrdenVenta();
+      grabarOrdenVenta();
+      grabarDetalleOrdenVenta();
     } else {
       actualizarOrdenVenta();
     }
@@ -240,7 +255,7 @@ const columns = [
       });
   }
 
-  function agregarOrdenVenta() {
+  function grabarOrdenVenta() {
     client
       .service("orden-venta")
       .create({
@@ -261,6 +276,42 @@ const columns = [
       .catch((e) => {
         console.log(JSON.stringify(e));
       });
+  }
+
+  function grabarDetalleOrdenVenta() {
+
+    detalleOrdenVenta.forEach((element) => {
+
+      client
+      .service("detalle-orden-venta")
+      .create({
+        num_serie: element.num_serie,
+        descripcion: element.descripcion,
+        cantidad: element.cantidad,
+        fecha_alta: element.fechaAlta,
+        fecha_ultima_mantencion: element.fechaUltimaMantencion,
+        observacion_1: element.observacion_1,
+        observacion_2: element.observacion_2,
+        observacion_3: element.observacion_3,
+        monto: element.monto,
+        unidad_medida_id: element.unidadMedidaId,
+        categoria_id: element.categoriaId,
+        marca_id: element.marcaId,
+        tipo_material_id: element.tipoMaterialId,
+        centro_costo_id: element.centroCostoId,
+        tipo_requerimiento_id: element.tipoRequerimientoId,
+        orden_venta_id: element.orden,
+        status_orden_venta_id: element.statusOrdenVentaId,
+      })
+      .then((response) => {
+        console.log("agregar detalle orden venta " + JSON.stringify(response));
+      })
+      .catch((e) => {
+        console.log(JSON.stringify(e));
+      });
+    });
+
+    
   }
 
   function leerClientes() {
@@ -657,7 +708,8 @@ const columns = [
       <div>
         <Button
           id="grabar"
-          type="submit"
+          //type="submit"
+          onClick={handleGrabar}
           variant="contained"
           endIcon={<SaveIcon />}
         >
