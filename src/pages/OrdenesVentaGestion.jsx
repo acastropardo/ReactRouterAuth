@@ -177,6 +177,8 @@ const columns = [
       grabarDetalleOrdenVenta();
     } else {
       actualizarOrdenVenta();
+      eliminarDetalleOrdenVenta(orden);
+      grabarDetalleOrdenVenta();
     }
   }
 
@@ -455,6 +457,18 @@ const columns = [
     .then((response) => {
       setStatusOrdenVenta(response.data);
       //console.log("combo personal " + JSON.stringify(response.data));
+    });
+  }
+
+  function eliminarDetalleOrdenVenta(orden){
+    client
+    .service("detalle-orden-venta")
+    .remove(null, { query: { ordenVentumId: orden } })
+    .then((response) => {
+      console.log("eliminar detalle orden venta " + JSON.stringify(response));
+    })
+    .catch((e) => {
+      console.log(JSON.stringify(e));
     });
   }
 
