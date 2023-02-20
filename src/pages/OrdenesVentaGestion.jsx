@@ -193,6 +193,18 @@ const columns = [
     console.log("OnInputChange " + clienteInput);
   }
 
+  function handleFechaDocumentoChange(value) {
+    //...
+    console.log("fecha documento "+value);
+    setFechaDocumento(value);
+  }
+
+  function handleFechaVisitaChange(value) {
+    //...
+    console.log("fecha visita "+value);
+    setFechaVisita(value);
+  }
+
   function actualizarOrdenVenta() {
     client
       .service("orden-venta")
@@ -539,10 +551,11 @@ const columns = [
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <Stack spacing={3}>
             <MobileDatePicker
+              id="fechaDocumento"
               label="Fecha documento"
               inputFormat="YYYY-MM-DD"
               value={fechaDocumento}
-              onChange={(e) => setFechaDocumento(e.target.value)}
+              onChange={handleFechaDocumentoChange}
               renderInput={(params) => <TextField {...params} />}
             />
           </Stack>
@@ -574,10 +587,11 @@ const columns = [
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Stack spacing={3}>
               <MobileDatePicker
+                id="fechaVisita"
                 label="Fecha visita"
                 inputFormat="YYYY-MM-DD"
                 value={fechaVisita}
-                onChange={(e) => setFechaVisita(e.target.value)}
+                onChange={handleFechaVisitaChange}
                 renderInput={(params) => <TextField {...params} />}
               />
             </Stack>
